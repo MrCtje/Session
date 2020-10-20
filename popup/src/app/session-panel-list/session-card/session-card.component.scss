@@ -1,0 +1,22 @@
+$primary-card-color: #525252;
+$active-card-color: #ec625f;
+
+.card {
+    background-color: $primary-card-color;
+    padding: 0.1em 1.5em;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: calc(100%);
+}
+
+.card:hover {
+    background-color: darken($primary-card-color, 10%);
+}
+
+.card:active {
+    background-color: $active-card-color;
+}

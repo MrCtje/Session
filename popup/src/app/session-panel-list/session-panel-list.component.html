@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="list">
+        <h3>Current Session</h3>
+        <session-card *ngIf="currentSession" [session]="currentSession"></session-card>
+    </div>
+
+    <div class="list">
+        <h3>Previous Sessions</h3>
+        <session-card *ngFor="let prevSess of previousSessions | async" [session]="prevSess"></session-card>
+    </div>
+
+    <div class="list">
+        <h3>Saved Sessions</h3>
+        <session-card *ngFor="let savedSess of savedSessions | async" [session]="savedSess"></session-card>
+    </div>
+</div>
