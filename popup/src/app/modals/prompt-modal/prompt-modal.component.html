@@ -1,0 +1,16 @@
+<ng-template #template>
+    <div class="modal-header">
+        <h4>{{title || 'Confirm'}}</h4>
+    </div>
+
+    <div class="modal-body text-center">
+        <p>{{question || 'Are you sure?'}}:</p>
+        <input type="text" [(ngModel)]="answer" [placeholder]="defaultAnswer" />
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="save()">Save</button>
+        <button type="button" class="btn btn-primary" (click)="cancel()">Cancel</button>
+    </div>
+</ng-template>

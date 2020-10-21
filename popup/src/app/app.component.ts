@@ -33,4 +33,8 @@ export class AppComponent {
       this.savedSessions,
       this.previousSessions]);
   }
+
+  deleteSession(id: number){
+      this.sessionController.deleteSession(id).then(() => this.reload());
+  }
 }

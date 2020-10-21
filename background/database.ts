@@ -44,7 +44,7 @@ export class Database {
         return this.sessionTable.bulkAdd(addModels);
     }
 
-    public removeSession(session: SessionModel): Promise<void> {
+    public removeSession(session: Pick<SessionModel, "id">): Promise<void> {
         return this.sessionTable.delete(session.id);
     }
 

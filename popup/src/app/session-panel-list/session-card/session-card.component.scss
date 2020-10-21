@@ -12,6 +12,29 @@ $active-card-color: #ec625f;
     overflow: hidden;
     width: calc(100%);
     border-bottom: thin solid darken($primary-card-color, 20%);
+    display: grid;
+    grid-template-columns: 76% 10%;
+
+    .information {
+        grid-column: 1;
+    }
+
+    .remove-button {
+        $remove-button-color: #bf1f1fc1;
+        grid-column: 2;
+        display: flex;
+        align-self: center;
+        justify-self: end;
+        color:  $remove-button-color;
+
+        &:hover {
+            color: lighten($remove-button-color, 20%);
+        }
+
+        &:active {
+            color: lighten($remove-button-color, 30%);
+        }
+    }
 }
 
 .card:hover {

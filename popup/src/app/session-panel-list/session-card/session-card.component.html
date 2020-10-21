@@ -1,4 +1,10 @@
 <div class="card" [ngClass]="{'active': isActive}">
-  <h3>{{ session.name ? session.name : "Changed " + ago(session.date) }}</h3>
-  <h5>{{ displayTabCount(session) }} </h5>
+    <div class="information">
+        <h3>{{ session.name ? session.name : "Changed " + ago(session.date) }}</h3>
+        <h5>{{ displayTabCount(session) }} </h5>
+    </div>
+
+    <div class="remove-button" (click)="deleteSession($event)">
+        <fa-icon [icon]="closeIcon"></fa-icon>
+    </div>
 </div>

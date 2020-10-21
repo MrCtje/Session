@@ -16,6 +16,8 @@ export interface PanelOutput {
 })
 export class SessionPanelListComponent implements OnInit {
   @Output() selectionChanged: EventEmitter<PanelOutput> = new EventEmitter();
+  @Output() onSessionDelete: EventEmitter<PanelOutput> = new EventEmitter();
+
   oldSelection: SessionCardComponent;
 
   @Input() currentSession: SessionModel;

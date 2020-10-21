@@ -1,4 +1,4 @@
-<div>
+<div class="container">
     <div class="header">
         <div class="header-title">
             <h2>{{sessionInfo ? sessionInfo.detailName : ""}}</h2>
@@ -10,7 +10,8 @@
                 </div>
                 <div class="text">Save</div>
             </button>
-            <button class="btn" aria-label="Open" [disabled]="sessionInfo && !sessionInfo.session.id">
+            <button class="btn" aria-label="Open" [disabled]="sessionInfo && !sessionInfo.session.id"
+                (click)="open(sessionInfo.session)">
                 <div class="text">Open</div>
             </button>
             <button class="btn transparent" aria-label="menu">
@@ -18,7 +19,33 @@
             </button>
         </div>
     </div>
-    <div>
-        {{stringify(sessionInfo)}}
+    <div class="content">
+        <div class="content-meta" *ngIf="sessionInfo">
+            <div class="content-date">
+                Changed {{toDateString(sessionInfo.session)}} <span
+                    class="content-date-ago">{{ago(sessionInfo.session.date)}}</span>
+            </div>
+            <div class="content-stats">
+                {{getStats(sessionInfo.session)}}
+            </div>
+        </div>
+        <ng-scrollbar>
+            <div class="content-container" *ngIf="sessionInfo">
+                <div class="session-window" *ngFor="let w of sessionInfo.session.windows | sortByIncognito">
+                    <div class="window-header">
+                        <fa-icon class="incognito-label" *ngIf="w.incognito" [icon]="incognito"></fa-icon>
+                        <!-- <div class="incognito-label" *ngIf="w.incognito">Incognito</div> -->
+                        <label class="window-label">Window</label>
+                        <label class="window-metadata">{{w.tabs.length}} tabs</label>
+                    </div>
+                    <div class="window-tabs" *ngFor="let t of w.tabs">
+                        <img class="tab-image" [src]="t.favIconUrl | safe" />
+                        <a class="tab-title" [href]="t.url | safe">{{t.title}}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-scrollbar>
     </div>
 </div>
+
+<prompt-modal #prompt></prompt-modal>

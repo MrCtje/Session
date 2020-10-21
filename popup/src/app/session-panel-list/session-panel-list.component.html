@@ -1,16 +1,24 @@
-<div class="container">
-    <div class="list">
-        <h3>{{currentSessionName}}</h3>
-        <session-card *ngIf="currentSession" [session]="currentSession" #card (click)="setActive(currentSession, card, currentSessionName)"></session-card>
-    </div>
+<ng-scrollbar>
+    <div class="container">
+        <div class="list">
+            <h3>{{currentSessionName}}</h3>
+            <session-card *ngIf="currentSession" [session]="currentSession" #card
+                (click)="setActive(currentSession, card, currentSessionName)"
+                (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
+        </div>
 
-    <div class="list">
-        <h3>{{previousSessionName}}</h3>
-        <session-card *ngFor="let prevSess of previousSessions | async" [session]="prevSess" #prevCard (click)="setActive(prevSess, prevCard, previousSessionName)"></session-card>
-    </div>
+        <div class="list">
+            <h3>{{previousSessionName}}</h3>
+            <session-card *ngFor="let prevSess of previousSessions | async" [session]="prevSess" #prevCard
+                (click)="setActive(prevSess, prevCard, previousSessionName)"
+                (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
+        </div>
 
-    <div class="list">
-        <h3>Saved Sessions</h3>
-        <session-card *ngFor="let savedSess of savedSessions | async" [session]="savedSess" #savedCard (click)="setActive(savedSess, savedCard, savedSess.name)"></session-card>
+        <div class="list">
+            <h3>Saved Sessions</h3>
+            <session-card *ngFor="let savedSess of savedSessions | async" [session]="savedSess" #savedCard
+                (click)="setActive(savedSess, savedCard, savedSess.name)"
+                (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
+        </div>
     </div>
-</div>
+</ng-scrollbar>
