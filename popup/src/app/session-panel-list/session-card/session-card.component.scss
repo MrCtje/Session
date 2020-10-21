@@ -1,4 +1,4 @@
-$primary-card-color: #525252;
+$primary-card-color: #271f1f;
 $active-card-color: #ec625f;
 
 .card {
@@ -11,12 +11,22 @@ $active-card-color: #ec625f;
     white-space: nowrap;
     overflow: hidden;
     width: calc(100%);
+    border-bottom: thin solid darken($primary-card-color, 20%);
 }
 
 .card:hover {
     background-color: darken($primary-card-color, 10%);
 }
 
+.card.active:hover {
+    background-color: darken($active-card-color, 10%);
+}
+
 .card:active {
+    @extend .active;
+}
+
+.active {
     background-color: $active-card-color;
+    border-bottom: thin solid darken($active-card-color, 20%);
 }

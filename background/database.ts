@@ -15,19 +15,33 @@ export class Database {
     }
 
     public getSessionModel(id: number): Promise<SessionModel> {
-        return this.sessionTable.get(id);
+        return this.sessionTable.get(id).then((session) => {
+            session.windows = JSON.parse(session.windows as any);
+            return session;
+        });
     }
 
     public getAllSessionModels(): Promise<SessionModel[]> {
-        return this.sessionTable.toArray();
+        return this.sessionTable.toArray()
+            .then((sessionList) => {
+                sessionList.forEach(s => s.windows = JSON.parse(s.windows as any));
+                return sessionList;
+            });
     }
 
     public addSessionModel(session: SessionModel): Promise<number> {
-        return this.sessionTable.add(session);
+        const addModel = { ...session };
+        delete addModel.id;
+        addModel.windows = JSON.stringify(addModel.windows) as any;
+        return this.sessionTable.add(addModel);
     }
 
     public addSessionsModel(sessions: SessionModel[]): Promise<number> {
-        return this.sessionTable.bulkAdd(sessions);
+        const addModels = JSON.parse(JSON.stringify(sessions)) as SessionModel[];
+        addModels.forEach(addModel => {
+            addModel.windows = JSON.stringify(addModel.windows) as any;
+        });
+        return this.sessionTable.bulkAdd(addModels);
     }
 
     public removeSession(session: SessionModel): Promise<void> {
@@ -39,8 +53,9 @@ export class Database {
     }
 
     public updateSession(session: SessionModel) {
-        const updateModel = {...session};
+        const updateModel = { ...session };
         delete updateModel.id;
+        updateModel.windows = JSON.stringify(updateModel.windows) as any;
         return this.sessionTable.update(session.id, updateModel);
     }
 }

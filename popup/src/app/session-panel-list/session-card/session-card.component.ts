@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { time } from 'console';
 import { SessionModel } from 'src/types/session';
 import * as timeago from 'timeago.js';
 
@@ -10,6 +9,7 @@ import * as timeago from 'timeago.js';
 })
 export class SessionCardComponent implements OnInit {
     @Input() session: SessionModel;
+    isActive: boolean;
 
     constructor() { }
 
@@ -29,6 +29,10 @@ export class SessionCardComponent implements OnInit {
     displayTabCount(session: SessionModel) {
         const count = this.countTabs(session);
         return count + (count > 1 ? " Tabs" : " Tab");
+    }
+
+    setActive(isActive: boolean) {
+        this.isActive = isActive;
     }
 
 }

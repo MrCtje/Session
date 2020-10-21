@@ -1,1 +1,24 @@
-<div>Detail</div>
+<div>
+    <div class="header">
+        <div class="header-title">
+            <h2>{{sessionInfo ? sessionInfo.detailName : ""}}</h2>
+        </div>
+        <div class="action">
+            <button class="btn" aria-label="Save" (click)="save(sessionInfo.session)">
+                <div class="icon">
+                    <i-feather name="save"></i-feather>
+                </div>
+                <div class="text">Save</div>
+            </button>
+            <button class="btn" aria-label="Open" [disabled]="sessionInfo && !sessionInfo.session.id">
+                <div class="text">Open</div>
+            </button>
+            <button class="btn transparent" aria-label="menu">
+                <i-feather name="more-vertical"></i-feather>
+            </button>
+        </div>
+    </div>
+    <div>
+        {{stringify(sessionInfo)}}
+    </div>
+</div>

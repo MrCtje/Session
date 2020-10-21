@@ -60,7 +60,7 @@ const api = {
         return {id: null, date: new Date(), name: "", windows };
     },
     storeSession: async function ({ sessionModel }) {
-        database.addSessionModel(JSON.parse(sessionModel));
+        return database.addSessionModel(sessionModel);
     },
     restoreSession: async function ({ sessionId }) {
         database.getSessionModel(sessionId)
@@ -96,7 +96,7 @@ const api = {
     }
 };
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (!request.func) {
         sendResponse({ error: "API Error: No function name passed." });
         return;
@@ -113,6 +113,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         return;
     }
     return true;
-});
+} as any);
 
 

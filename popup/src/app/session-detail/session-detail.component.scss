@@ -1,0 +1,74 @@
+@import "../../common.scss";
+
+.header {
+    color: white;
+    padding: 1em;
+    border-bottom: thin solid grey;
+    display: flex;
+    align-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    display: inline-block;
+    flex-basis: 100%;
+}
+
+.action {
+    display: flex;
+    min-width: max-content;
+}
+
+.btn {
+    color:white;
+    background-color: $primary-btn-color;
+    border-radius: 10%;
+    padding: 0px;
+    margin: 0.5em;
+    font-weight: bold;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.text {
+    padding: 0.5em;
+}
+
+.btn:enabled{
+    // border-bottom: thin solid darken($primary-btn-color, 10%);
+    // border-right: thin solid darken($primary-btn-color, 10%);
+    cursor: pointer;
+}
+
+.btn:disabled {
+    background-color:grey;
+    color: darken($color: white, $amount: 20%)
+}
+
+.btn:enabled:hover {
+    background-color: darken($primary-btn-color, 10%);
+}
+
+.btn:enabled:active {
+    background-color: darken($primary-btn-color, 20%);
+}
+
+.btn.transparent {
+    background-color: transparent;
+    border: none;
+}
+
+.btn.transparent:hover {
+    @extend .btn, .transparent, :enabled;
+}
+
+.btn.transparent:active {
+    @extend .btn, .transparent, :enabled;
+}
+
+.icon {
+    backdrop-filter: brightness(0.5);
+    padding: 3px;
+    border-radius: 10% 0% 0% 10%;
+}

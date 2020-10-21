@@ -1,10 +1,13 @@
 <div [ngStyle]="{'width': width + 'px', 'height': height + 'px'}">
     <as-split direction="horizontal">
-        <as-split-area [size]="20" [minSize]="10" [maxSize]="30">
-            <session-panel-list></session-panel-list>
+        <as-split-area [size]="30" [minSize]="10" [maxSize]="40">
+            <session-panel-list (selectionChanged)="selectedSession = $event"
+            [currentSession]="currentSession"
+            [savedSessions]="savedSessions"
+            [previousSessions]="previousSessions"></session-panel-list>
         </as-split-area>
-        <as-split-area [size]="80">
-            <session-detail></session-detail>
+        <as-split-area [size]="70">
+            <session-detail [sessionInfo]="selectedSession" (sessionSaved)="reload()"></session-detail>
         </as-split-area>
     </as-split>
 </div>
