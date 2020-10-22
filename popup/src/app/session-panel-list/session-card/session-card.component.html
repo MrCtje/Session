@@ -1,6 +1,6 @@
 <div class="card" [ngClass]="{'active': isActive}">
     <div class="information">
-        <h6 class="card-title">{{ session.name ? session.name : "Changed " + ago(session.date) }}</h6>
+        <h6 class="card-title" [innerHTML]="sessionName"></h6>
         <label>{{ displayTabCount(session) }} </label>
     </div>
 

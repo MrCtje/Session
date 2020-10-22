@@ -5,21 +5,21 @@
             <div class="main" *ngIf="sessions">
                 <div class="list" *ngIf="sessions | filterCurrentSession as currentSession">
                     <h5>{{currentSessionName}}</h5>
-                    <session-card  [session]="currentSession" #card
+                    <session-card [searchResult]="searchResult" [session]="currentSession" #card
                         (click)="setActive(currentSession, card)"
                         (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
                 </div>
 
                 <div class="list">
                     <h5>{{backupSessionName}}</h5>
-                    <session-card *ngFor="let backupSess of sessions | filterBackupSessions" [session]="backupSess" #backupCard
+                    <session-card [searchResult]="searchResult" *ngFor="let backupSess of sessions | filterBackupSessions" [session]="backupSess" #backupCard
                         (click)="setActive(backupSess, backupCard)"
                         (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
                 </div>
 
                 <div class="list">
                     <h5>Saved Sessions</h5>
-                    <session-card *ngFor="let savedSess of sessions | filterSavedSessions" [session]="savedSess" #savedCard
+                    <session-card [searchResult]="searchResult" *ngFor="let savedSess of sessions | filterSavedSessions" [session]="savedSess" #savedCard
                         (click)="setActive(savedSess, savedCard)"
                         (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
                 </div>
@@ -27,11 +27,11 @@
         </ng-scrollbar>
     </ng-template>
 
-    <ng-container *ngIf="!searchResult; else searchList">
+    <ng-container *ngIf="!searchSessions; else searchList">
         <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: allSessions}" ></ng-container>
     </ng-container>
 
     <ng-template #searchList>
-        <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: searchResult}" ></ng-container>
+        <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: searchSessions}" ></ng-container>
     </ng-template>
 </div>

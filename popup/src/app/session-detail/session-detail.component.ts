@@ -1,21 +1,25 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { SessionModel } from 'src/types/session';
 import { SessionController } from 'src/controller/session-controller';
 import * as timeago from 'timeago.js';
 import { countTabs } from 'src/methods/window';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { PromptModalComponent } from '../modals/prompt-modal/prompt-modal.component';
+import { SearchKeys, SearchOutput } from '../session-panel-list/session-search/session-search.component';
+import { markString } from 'src/methods/string';
+import { url } from 'inspector';
 
 @Component({
     selector: 'session-detail',
     templateUrl: './session-detail.component.html',
     styleUrls: ['./session-detail.component.scss']
 })
-export class SessionDetailComponent implements OnInit {
+export class SessionDetailComponent implements OnInit, OnChanges {
     @ViewChild(PromptModalComponent, { static: true }) prompt: PromptModalComponent;
 
     incognito = faUserSecret;
     @Input() session: SessionModel;
+    @Input() searchResult: SearchOutput | null;
     @Output() sessionSaved: EventEmitter<number> = new EventEmitter();
 
     get stringify() {
@@ -29,6 +33,48 @@ export class SessionDetailComponent implements OnInit {
     constructor(private sessionController: SessionController) { }
 
     ngOnInit(): void {
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        // if (!changes.searchResult) {
+        //     return;
+        // }
+
+        // const searchResult: SearchOutput | null = changes.searchResult.currentValue;
+        // if (searchResult) {
+        //     this.mark();
+        // }
+    }
+
+    mark(title: string, url: string): string {
+        const rs = this.searchResult.find(x => x.item.id === this.session.id);
+        if (!rs) {
+            return title;
+        }
+
+        const matches = rs.matches
+            .filter(x => x.key === SearchKeys["windows.tabs.title"] || x.key === SearchKeys["windows.tabs.url"]);
+
+        if (!matches) {
+            return title;
+        }
+
+        console.log(matches);
+        const match = matches.find(x => x.value === title);
+        if (!match) {
+            const urlMatch = matches.find(x => x.value === url);
+            if (urlMatch) {
+                // Mark whole string
+                return  "<span class='mark'>" + title + "</span>";
+            }
+
+            return title;
+        }
+
+        return markString(title,
+            "<span class='mark'>",
+            "</span>",
+            match.indices as any);
     }
 
     save(session: SessionModel): void {
@@ -57,7 +103,7 @@ export class SessionDetailComponent implements OnInit {
     }
 
     openWindow(sessionId: number, windowId: number): void {
-        if(sessionId) {
+        if (sessionId) {
             this.sessionController.restoreWindow(sessionId, windowId);
         } else {
             this.sessionController.focusWindow(windowId);

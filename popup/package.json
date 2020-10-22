@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng build --watch --deploy-url \"dist/\"",
     "build": "ng build --deploy-url \"dist/\"",
+    "prod": "ng build --prod --deploy-url \"dist/\"",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

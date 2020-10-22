@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SessionModel } from 'src/types/session';
 import { SessionController } from 'src/controller/session-controller';
+import { SearchOutput } from './session-panel-list/session-search/session-search.component';
 
 @Component({
     selector: 'app-root',
@@ -11,6 +12,9 @@ export class AppComponent {
     selectedSession: SessionModel;
     currentSession: SessionModel;
     allSessions: SessionModel[];
+
+    searchResult: SearchOutput | null;
+
 
     constructor(private sessionController: SessionController) { }
 

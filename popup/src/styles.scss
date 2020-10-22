@@ -218,3 +218,10 @@ input[type="text"] {
 .button.transparent:active {
     @extend .button, .transparent, :enabled;
 }
+
+
+.card-title {
+    .mark {
+        color: black;
+    }
+}

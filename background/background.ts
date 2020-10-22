@@ -59,7 +59,7 @@ const api = {
             return windowModel;
         });
 
-        return { id: null, date: new Date(), name: "", windows };
+        return { id: null, date: new Date(), name: "", windows } as SessionModel;
     },
     storeSession: async function ({ sessionModel }) {
         return database.addSessionModel(sessionModel);
@@ -80,8 +80,8 @@ const api = {
                 restoreWindow(windowModel);
             });
     },
-    focusWindow: async function ({ windowId }) { 
-        browser.windows.update(windowId, {focused: true});
+    focusWindow: async function ({ windowId }) {
+        browser.windows.update(windowId, { focused: true });
     },
     deleteSession: async function ({ sessionId }) {
         return database.removeSession({ id: sessionId });
@@ -118,9 +118,10 @@ function restoreWindow(windowModel) {
     browser.windows.create(windowCreateData)
         .then(window => ({ window: window, tabToRemove: window.tabs[0].id }))
         .then((result) => {
-            windowModel.tabs
+
+            const restoredPromise = windowModel.tabs
                 .sort((a, b) => a.index - b.index)
-                .forEach(tabModel => {
+                .map(tabModel => {
                     const tabCreateData: Tabs.CreateCreatePropertiesType = {
                         windowId: result.window.id,
                         active: tabModel.active,
@@ -139,12 +140,21 @@ function restoreWindow(windowModel) {
                         }
                     }
 
-                    browser.tabs.create(tabCreateData).catch((e) => {
+                    if(tabCreateData.url.startsWith('chrome-extension://')) {
+                        const tCopy = {...tabCreateData};
+                        tCopy.url = null;
+                        return browser.tabs.create(tCopy).then(realTab => {
+                            return browser.tabs.update(realTab.id, {url: tabCreateData.url});
+                        });
+                    }
+
+                    return browser.tabs.create(tabCreateData).catch((e) => {
                         console.log("Failed to create tab: " + e)
                     });
                 });
 
-            browser.tabs.remove(result.tabToRemove);
+            Promise.all(restoredPromise)
+                .then(() => browser.tabs.remove(result.tabToRemove));
         });
 }
 

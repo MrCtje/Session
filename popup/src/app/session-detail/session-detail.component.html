@@ -50,8 +50,12 @@
                     </div>
                     <div class="window-tabs" *ngFor="let t of w.tabs">
                         <img class="tab-image" [src]="t.favIconUrl | safe" />
-
-                        <a class="tab-title" [href]="t.url | safe">{{t.title}}</a>
+                        <ng-container *ngIf="searchResult else noSearch">
+                            <a class="tab-title" [href]="t.url | safe" [innerHTML]="mark(t.title, t.url)"></a>
+                        </ng-container>
+                        <ng-template #noSearch>
+                            <a class="tab-title" [href]="t.url | safe">{{t.title}}</a>
+                        </ng-template>
                         <a class="tab-url">{{t.url}}</a>
                     </div>
                 </div>
