@@ -63,6 +63,10 @@
         margin-left: 1em;
         max-height: 600px;
         .session-window {
+            &:last-child {
+                padding-bottom: 3em;
+            }
+
             margin-bottom: 3em;
             .window-header {
                 margin-bottom: 1em;
