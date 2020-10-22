@@ -64,6 +64,9 @@ const api = {
     storeSession: async function ({ sessionModel }) {
         return database.addSessionModel(sessionModel);
     },
+    updateSession: async function ({ sessionModel }) {
+        return database.updateSession(sessionModel);
+    },
     restoreSession: async function ({ sessionId }) {
         const dimensionIfInCorrectState = (state: Windows.WindowState, v: number) => {
             switch (state) {

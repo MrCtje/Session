@@ -1,6 +1,6 @@
-<div class="container">
+<div class="main">
     <as-split direction="horizontal">
-        <as-split-area [size]="30" [minSize]="10" [maxSize]="40">
+        <as-split-area [size]="30" [minSize]="20" [maxSize]="40">
             <session-panel-list (selectionChanged)="selectedSession = $event"
             [currentSession]="currentSession"
             [savedSessions]="savedSessions"
@@ -12,5 +12,3 @@
         </as-split-area>
     </as-split>
 </div>
-
-<div class="modal-container"></div>

@@ -1,20 +1,26 @@
-<div class="container">
+<div class="main">
     <div class="header">
         <div class="header-title">
-            <h2>{{sessionInfo ? sessionInfo.detailName : ""}}</h2>
+            <h4 *ngIf="sessionInfo && !sessionInfo.session.id else savedSession">
+                {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name)  : ""}}</h4>
+            <ng-template #savedSession>
+                <h4 class="link" (click)="editName(sessionInfo.session)" matTooltip="Edit name">
+                    {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name) : ""}}</h4>
+            </ng-template>
+
         </div>
         <div class="action">
-            <button class="btn" aria-label="Save" (click)="save(sessionInfo.session)">
+            <button class="button" aria-label="Save" (click)="save(sessionInfo.session)" *ngIf="sessionInfo && !sessionInfo.session.id">
                 <div class="icon">
                     <i-feather name="save"></i-feather>
                 </div>
                 <div class="text">Save</div>
             </button>
-            <button class="btn" aria-label="Open" [disabled]="sessionInfo && !sessionInfo.session.id"
+            <button class="button" aria-label="Open" [disabled]="sessionInfo && !sessionInfo.session.id"
                 (click)="open(sessionInfo.session)">
                 <div class="text">Open</div>
             </button>
-            <button class="btn transparent" aria-label="menu">
+            <button class="button transparent" aria-label="menu">
                 <i-feather name="more-vertical"></i-feather>
             </button>
         </div>
@@ -40,7 +46,9 @@
                     </div>
                     <div class="window-tabs" *ngFor="let t of w.tabs">
                         <img class="tab-image" [src]="t.favIconUrl | safe" />
+
                         <a class="tab-title" [href]="t.url | safe">{{t.title}}</a>
+                        <a class="tab-url">{{t.url}}</a>
                     </div>
                 </div>
             </div>

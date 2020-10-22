@@ -24,4 +24,8 @@ export class SessionController {
     deleteSession(id: number) {
         return browser.runtime.sendMessage({ func: "deleteSession", sessionId: id });
     }
+
+    updateSession(session: Partial<SessionModel> & Pick<SessionModel, "id">) {
+        return browser.runtime.sendMessage({ func: "updateSession", sessionModel: session });
+    }
 }

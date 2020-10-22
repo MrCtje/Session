@@ -21,11 +21,11 @@ export class SessionPanelListComponent implements OnInit {
   oldSelection: SessionCardComponent;
 
   @Input() currentSession: SessionModel;
-  @Input() previousSessions: Promise<SessionModel[]>;
+  @Input() backupSessions: Promise<SessionModel[]>;
   @Input() savedSessions: Promise<SessionModel[]>;
 
   currentSessionName = "Current Session";
-  previousSessionName = "Previous Sessions";
+  backupSessionName = "Backup Sessions";
 
   constructor() { }
 

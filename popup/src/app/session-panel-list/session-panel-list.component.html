@@ -1,23 +1,23 @@
 <ng-scrollbar>
-    <div class="container">
+    <div class="main">
         <div class="list">
-            <h3>{{currentSessionName}}</h3>
+            <h5>{{currentSessionName}}</h5>
             <session-card *ngIf="currentSession" [session]="currentSession" #card
                 (click)="setActive(currentSession, card, currentSessionName)"
                 (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
         </div>
 
         <div class="list">
-            <h3>{{previousSessionName}}</h3>
-            <session-card *ngFor="let prevSess of previousSessions | async" [session]="prevSess" #prevCard
-                (click)="setActive(prevSess, prevCard, previousSessionName)"
+            <h5>{{backupSessionName}}</h5>
+            <session-card *ngFor="let backupSess of backupSessions | async" [session]="backupSess" #backupCard
+                (click)="setActive(backupSess, backupCard, backupSessionName)"
                 (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
         </div>
 
         <div class="list">
-            <h3>Saved Sessions</h3>
+            <h5>Saved Sessions</h5>
             <session-card *ngFor="let savedSess of savedSessions | async" [session]="savedSess" #savedCard
-                (click)="setActive(savedSess, savedCard, savedSess.name)"
+                (click)="setActive(savedSess, savedCard, '')"
                 (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
         </div>
     </div>

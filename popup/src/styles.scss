@@ -3,6 +3,8 @@
 // For more information: https://material.angular.io/guide/theming
 @import "~@angular/material/theming";
 // Plus imports for other components in your app.
+@import "common.scss";
+
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -59,6 +61,11 @@ body {
     font-size: 14px;
 }
 
+input[type="text"] {
+    border-radius: 5%;
+    padding: 0.6rem;
+}
+
 
 
 // // Reset
@@ -72,3 +79,142 @@ body {
 // p{margin:0;}
 // cite {font-style:normal;}
 // fieldset{border-width:0; padding:0; margin:0;}
+
+
+.modal {
+    // position: fixed;
+    // top: 0;
+    // right: 0;
+    // bottom: 0;
+    // left: 0;
+    // z-index: 1050;
+    // display: none;
+    // overflow: hidden;
+    // -webkit-overflow-scrolling: touch;
+    // outline: 0;
+    color: white;
+  }
+.modal-content {
+    // position: relative;
+    background-color: #414141;
+    // -webkit-background-clip: padding-box;
+    //         background-clip: padding-box;
+    // border: 1px solid #999;
+    // border: 1px solid rgba(0, 0, 0, .2);
+    // border-radius: 6px;
+    // outline: 0;
+    // -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    //         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+  }
+//   .modal-backdrop {
+//     position: fixed;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     left: 0;
+//     z-index: 1040;
+//     background-color: #000;
+//   }
+//   .modal-backdrop.fade {
+//     filter: alpha(opacity=0);
+//     opacity: 0;
+//   }
+//   .modal-backdrop.in {
+//     filter: alpha(opacity=50);
+//     opacity: .5;
+//   }
+  .modal-header {
+    // padding: 15px;
+    border-bottom: thin solid grey;
+  }
+//   .modal-header .close {
+//     margin-top: -2px;
+//   }
+//   .modal-title {
+//     margin: 0;
+//     line-height: 1.42857143;
+//   }
+//   .modal-body {
+//     position: relative;
+//     padding: 15px;
+//   }
+  .modal-footer {
+    // padding: 15px;
+    // text-align: right;
+    // border-top: 1px solid #e5e5e5;
+    border-top: thin solid grey;
+  }
+//   .modal-footer .btn + .btn {
+//     margin-bottom: 0;
+//     margin-left: 5px;
+//   }
+//   .modal-footer .btn-group .btn + .btn {
+//     margin-left: -1px;
+//   }
+//   .modal-footer .btn-block + .btn-block {
+//     margin-left: 0;
+//   }
+//   .modal-scrollbar-measure {
+//     position: absolute;
+//     top: -9999px;
+//     width: 50px;
+//     height: 50px;
+//     overflow: scroll;
+//   }
+
+/// button
+
+.button {
+    color: white;
+    background-color: $primary-btn-color;
+    border-radius: 10%;
+    padding: 0px;
+    margin: 0.5em;
+    font-weight: bold;
+    border: none;
+    display: flex;
+    align-items: center;
+
+    .text {
+        padding: 0.5em;
+    }
+
+    .icon {
+        backdrop-filter: brightness(0.5);
+        -webkit-backdrop-filter: brightness(0.5);
+        padding: 3px;
+        border-radius: 10% 0% 0% 10%;
+    }
+}
+
+.button:enabled {
+    // border-bottom: thin solid darken($primary-btn-color, 10%);
+    // border-right: thin solid darken($primary-btn-color, 10%);
+    cursor: pointer;
+}
+
+.button:disabled {
+    background-color: grey;
+    color: darken($color: white, $amount: 20%);
+}
+
+.button:enabled:hover {
+    background-color: darken($primary-btn-color, 10%);
+}
+
+.button:enabled:active {
+    background-color: darken($primary-btn-color, 20%);
+}
+
+.button.transparent {
+    background-color: transparent;
+    border: none;
+}
+
+.button.transparent:hover {
+    @extend .button, .transparent, :enabled;
+}
+
+.button.transparent:active {
+    @extend .button, .transparent, :enabled;
+}

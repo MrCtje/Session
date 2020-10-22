@@ -21,12 +21,12 @@ export class AppComponent {
   constructor(private sessionController: SessionController) { }
 
   ngOnInit() {
-    this.reload().then(() => this.selectedSession = {session: this.currentSession, detailName: "Current Session" });
+    this.reload().then(() => this.selectedSession = { session: this.currentSession, detailName: "Current Session" });
   }
 
   reload() {
-    this.savedSessions = this.sessionController.getAllSessions(),
-      this.previousSessions = this.savedSessions;
+    this.savedSessions = this.sessionController.getAllSessions();
+    this.previousSessions = this.savedSessions;
 
     return Promise.all([
       this.sessionController.getCurrentSession().then(s => this.currentSession = s),
@@ -34,7 +34,7 @@ export class AppComponent {
       this.previousSessions]);
   }
 
-  deleteSession(id: number){
-      this.sessionController.deleteSession(id).then(() => this.reload());
+  deleteSession(id: number) {
+    this.sessionController.deleteSession(id).then(() => this.reload());
   }
 }

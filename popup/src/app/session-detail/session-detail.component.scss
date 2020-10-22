@@ -1,6 +1,6 @@
 @import "../../common.scss";
 
-.container {
+.main {
     word-break: break-all;
     overflow: hidden;
     display: grid;
@@ -20,6 +20,11 @@
 .header-title {
     display: inline-block;
     flex-basis: 100%;
+
+    .link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
 
 .content {
@@ -36,13 +41,15 @@
 
         .content-date {
             flex-basis: 75%;
-            font-size: large;
+            font-size: larger;
+            word-break: normal;
 
             .content-date-ago {
                 color: grey;
             }
         }
         .content-stats {
+            word-break: normal;
             text-align: end;
             flex: 25%;
         }
@@ -61,7 +68,7 @@
                     // border: 2px solid $primary-btn-color;
                     // display: inline-block;
                     // padding: 2px;
-                    margin-right: 0.5em;;
+                    margin-right: 0.5em;
                 }
                 .window-label {
                     margin-right: 2.5em;
@@ -85,69 +92,31 @@
 
                 .tab-title {
                     color: $primary-btn-color;
+                    margin-right: 1em;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    max-width: 300px;
+                }
+
+                .tab-title:hover + .tab-url {
+                    display: block;
+                }
+
+                .tab-url {
+                    display: none;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    max-width: 30%;
                 }
             }
         }
-
     }
 }
 
 .action {
     display: flex;
     min-width: max-content;
-}
-
-.btn {
-    color: white;
-    background-color: $primary-btn-color;
-    border-radius: 10%;
-    padding: 0px;
-    margin: 0.5em;
-    font-weight: bold;
-    border: none;
-    display: flex;
-    align-items: center;
-}
-
-.text {
-    padding: 0.5em;
-}
-
-.btn:enabled {
-    // border-bottom: thin solid darken($primary-btn-color, 10%);
-    // border-right: thin solid darken($primary-btn-color, 10%);
-    cursor: pointer;
-}
-
-.btn:disabled {
-    background-color: grey;
-    color: darken($color: white, $amount: 20%);
-}
-
-.btn:enabled:hover {
-    background-color: darken($primary-btn-color, 10%);
-}
-
-.btn:enabled:active {
-    background-color: darken($primary-btn-color, 20%);
-}
-
-.btn.transparent {
-    background-color: transparent;
-    border: none;
-}
-
-.btn.transparent:hover {
-    @extend .btn, .transparent, :enabled;
-}
-
-.btn.transparent:active {
-    @extend .btn, .transparent, :enabled;
-}
-
-.icon {
-    backdrop-filter: brightness(0.5);
-    -webkit-backdrop-filter: brightness(0.5);
-    padding: 3px;
-    border-radius: 10% 0% 0% 10%;
 }

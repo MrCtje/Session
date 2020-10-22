@@ -10,7 +10,11 @@
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="save()">Save</button>
-        <button type="button" class="btn btn-primary" (click)="cancel()">Cancel</button>
+        <button type="button" class="button" (click)="save()">
+            <div class="text">Save</div>
+        </button>
+        <button type="button" class="button transparent" (click)="cancel()">
+            <div class="text"> Cancel</div>
+        </button>
     </div>
 </ng-template>

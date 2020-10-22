@@ -52,10 +52,12 @@ export class Database {
         return this.sessionTable.bulkDelete(sessions.map((s) => s.id));
     }
 
-    public updateSession(session: SessionModel) {
+    public updateSession(session: SessionModel): Promise<number> {
         const updateModel = { ...session };
         delete updateModel.id;
-        updateModel.windows = JSON.stringify(updateModel.windows) as any;
+        if(updateModel.windows) {
+            updateModel.windows = JSON.stringify(updateModel.windows) as any;
+        }
         return this.sessionTable.update(session.id, updateModel);
     }
 }

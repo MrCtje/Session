@@ -8,53 +8,60 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { PromptModalComponent } from '../modals/prompt-modal/prompt-modal.component';
 
 @Component({
-    selector: 'session-detail',
-    templateUrl: './session-detail.component.html',
-    styleUrls: ['./session-detail.component.scss']
+  selector: 'session-detail',
+  templateUrl: './session-detail.component.html',
+  styleUrls: ['./session-detail.component.scss']
 })
 export class SessionDetailComponent implements OnInit {
-    @ViewChild(PromptModalComponent, {static: true}) prompt: PromptModalComponent;
+  @ViewChild(PromptModalComponent, { static: true }) prompt: PromptModalComponent;
 
-    incognito = faUserSecret;
-    @Input() sessionInfo: PanelOutput;
-    @Output() sessionSaved: EventEmitter<number> = new EventEmitter();
+  incognito = faUserSecret;
+  @Input() sessionInfo: PanelOutput;
+  @Output() sessionSaved: EventEmitter<number> = new EventEmitter();
 
-    get stringify() {
-        return JSON.stringify;
-    }
+  get stringify() {
+    return JSON.stringify;
+  }
 
-    get ago() {
-        return timeago.format;
-    }
+  get ago() {
+    return timeago.format;
+  }
 
-    constructor(private sessionController: SessionController) { }
+  constructor(private sessionController: SessionController) { }
 
-    ngOnInit(): void {
-    }
+  ngOnInit(): void {
+  }
 
-    save(session: SessionModel): void {
-        // this.modalService.addModal(PromptModalComponent,
-        //     { defaultAnswer: "Unnamed Session", question: "Name", title: "Saving Session" },
-        //     { closeOnClickOutside: false })
-        //     .subscribe((name) => {
-        //         session.name = name;
-        //         this.sessionController.saveSession(session).then((id) =>
-        //             this.sessionSaved.emit(id)
-        //         );
-        //     });
-        this.prompt.openModal();
-    }
+  save(session: SessionModel): void {
+    this.prompt.openModal({ defaultAnswer: "Unnamed Session", question: "Name", title: "Saving Session" })
+      .subscribe((name) => {
+        session.name = name;
+        this.sessionController.saveSession(session).then((id) =>
+          this.sessionSaved.emit(id)
+        );
+      });
+  }
 
-    open(session: SessionModel): void {
-        this.sessionController.restoreSession(session.id);
-    }
+  editName(session: SessionModel): void {
+    this.prompt.openModal({ defaultAnswer: "Unnamed Session", answer: session.name, question: "Name", title: "Edit Name" })
+      .subscribe((name) => {
+        session.name = name;
+        this.sessionController.updateSession({id: session.id, name}).then((id) =>
+          this.sessionSaved.emit(id)
+        );
+      });
+  }
 
-    toDateString(session: SessionModel) {
-        return new Date(session.date.toString()).toLocaleString();
-    }
+  open(session: SessionModel): void {
+    this.sessionController.restoreSession(session.id);
+  }
 
-    getStats(session: SessionModel) {
-        return `${session.windows.length} Windows  ${countTabs(session)} Tabs`
-    }
+  toDateString(session: SessionModel) {
+    return new Date(session.date.toString()).toLocaleString();
+  }
+
+  getStats(session: SessionModel) {
+    return `${session.windows.length} Windows  ${countTabs(session)} Tabs`
+  }
 
 }

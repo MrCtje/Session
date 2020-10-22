@@ -17,34 +17,36 @@ import { SortByIncognitoPipe } from 'src/pipes/sort-by-incognito.pipe';
 import { PromptModalComponent } from './modals/prompt-modal/prompt-modal.component';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 
 const Icons = {
-    MoreVertical,
-    Save
+  MoreVertical,
+  Save
 };
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        SessionPanelListComponent,
-        SessionCardComponent,
-        SessionDetailComponent,
-        SafePipe,
-        SortByIncognitoPipe,
-        PromptModalComponent
-    ],
-    imports: [
-        BrowserModule,
-        NgScrollbarModule,
-        AngularSplitModule.forRoot(),
-        MatButtonModule,
-        FeatherModule.pick(Icons),
-        BrowserAnimationsModule,
-        FontAwesomeModule,
-        FormsModule,
-        ModalModule.forRoot()
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    SessionPanelListComponent,
+    SessionCardComponent,
+    SessionDetailComponent,
+    SafePipe,
+    SortByIncognitoPipe,
+    PromptModalComponent
+  ],
+  imports: [
+    BrowserModule,
+    NgScrollbarModule,
+    AngularSplitModule.forRoot(),
+    MatButtonModule,
+    FeatherModule.pick(Icons),
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+    FormsModule,
+    ModalModule.forRoot(),
+    MatTooltipModule
+  ],
+  providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: { position: 'above' } as MatTooltipDefaultOptions }],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

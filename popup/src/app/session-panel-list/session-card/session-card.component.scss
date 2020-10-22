@@ -13,10 +13,18 @@ $active-card-color: #ec625f;
     width: calc(100%);
     border-bottom: thin solid darken($primary-card-color, 20%);
     display: grid;
-    grid-template-columns: 76% 10%;
+    grid-template-columns: minmax(50px, 1fr) 15%;
+    margin-bottom: 0.7em;
 
     .information {
         grid-column: 1;
+        text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+        .card-title {
+            margin-top: .5rem;
+        }
     }
 
     .remove-button {
