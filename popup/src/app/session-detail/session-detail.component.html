@@ -2,15 +2,18 @@
     <div class="header">
         <div class="header-title">
             <h4 *ngIf="sessionInfo && !sessionInfo.session.id else savedSession">
-                {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name)  : ""}}</h4>
+                {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name)  : ""}}
+            </h4>
             <ng-template #savedSession>
                 <h4 class="link" (click)="editName(sessionInfo.session)" matTooltip="Edit name">
-                    {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name) : ""}}</h4>
+                    {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name) : ""}}
+                </h4>
             </ng-template>
 
         </div>
         <div class="action">
-            <button class="button" aria-label="Save" (click)="save(sessionInfo.session)" *ngIf="sessionInfo && !sessionInfo.session.id">
+            <button class="button" aria-label="Save" (click)="save(sessionInfo.session)"
+                *ngIf="sessionInfo && !sessionInfo.session.id">
                 <div class="icon">
                     <i-feather name="save"></i-feather>
                 </div>
@@ -41,7 +44,7 @@
                     <div class="window-header">
                         <fa-icon class="incognito-label" *ngIf="w.incognito" [icon]="incognito"></fa-icon>
                         <!-- <div class="incognito-label" *ngIf="w.incognito">Incognito</div> -->
-                        <label class="window-label">Window</label>
+                        <label class="window-label link" (click)="openWindow(sessionInfo.session.id, w.id)" matTooltip="Open window">Window</label>
                         <label class="window-metadata">{{w.tabs.length}} tabs</label>
                     </div>
                     <div class="window-tabs" *ngFor="let t of w.tabs">

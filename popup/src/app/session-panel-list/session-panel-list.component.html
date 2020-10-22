@@ -7,9 +7,9 @@
                 (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
         </div>
 
-        <div class="list">
+        <div class="list" *ngIf="backupSessions | async as bList">
             <h5>{{backupSessionName}}</h5>
-            <session-card *ngFor="let backupSess of backupSessions | async" [session]="backupSess" #backupCard
+            <session-card *ngFor="let backupSess of bList" [session]="backupSess" #backupCard
                 (click)="setActive(backupSess, backupCard, backupSessionName)"
                 (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
         </div>

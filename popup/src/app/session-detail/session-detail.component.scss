@@ -21,10 +21,14 @@
     display: inline-block;
     flex-basis: 100%;
 
-    .link {
-        text-decoration: underline;
-        cursor: pointer;
+    >h4 {
+        display: inline-block;
     }
+}
+
+.link {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .content {

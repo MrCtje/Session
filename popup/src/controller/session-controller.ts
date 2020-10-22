@@ -21,6 +21,10 @@ export class SessionController {
         return browser.runtime.sendMessage({ func: "restoreSession", sessionId: id });
     }
 
+    restoreWindow(id: number, windowId: number) {
+        return browser.runtime.sendMessage({ func: "restoreWindow", sessionId: id, windowId });
+    }
+
     deleteSession(id: number) {
         return browser.runtime.sendMessage({ func: "deleteSession", sessionId: id });
     }
