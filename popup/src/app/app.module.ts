@@ -18,6 +18,10 @@ import { PromptModalComponent } from './modals/prompt-modal/prompt-modal.compone
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { SessionSearchComponent } from './session-panel-list/session-search/session-search.component';
+import { FilterBackupSessionsPipe } from 'src/pipes/filter-backup-session';
+import { FilterSavedSessionsPipe } from 'src/pipes/filter-saved-session';
+import { FilterCurrentSessionPipe } from 'src/pipes/filter-current-session';
 
 const Icons = {
   MoreVertical,
@@ -32,7 +36,11 @@ const Icons = {
     SessionDetailComponent,
     SafePipe,
     SortByIncognitoPipe,
-    PromptModalComponent
+    PromptModalComponent,
+    SessionSearchComponent,
+    FilterBackupSessionsPipe,
+    FilterSavedSessionsPipe,
+    FilterCurrentSessionPipe,
   ],
   imports: [
     BrowserModule,

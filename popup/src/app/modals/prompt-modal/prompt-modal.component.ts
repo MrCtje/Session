@@ -46,7 +46,7 @@ export class PromptModalComponent implements OnInit {
 
     save() {
         this.modalRef.hide();
-        this.subscription.next(this.answer.trim() || this.defaultAnswer);
+        this.subscription.next((this.answer || "").trim() || this.defaultAnswer);
     }
 
     cancel() {

@@ -80,6 +80,9 @@ const api = {
                 restoreWindow(windowModel);
             });
     },
+    focusWindow: async function ({ windowId }) { 
+        browser.windows.update(windowId, {focused: true});
+    },
     deleteSession: async function ({ sessionId }) {
         return database.removeSession({ id: sessionId });
     }
@@ -126,14 +129,14 @@ function restoreWindow(windowModel) {
                         url: tabModel.url,
                     };
 
-                    if (tabModel.discarded) {
-                        tabCreateData.discarded = tabModel.discarded;
-                        tabCreateData.title = tabModel.title;
-                    }
-
                     const b = getBrowser();
                     if (b === "Firefox") {
                         tabCreateData.openInReaderMode = tabModel.isInReaderMode; // firefox
+
+                        if (tabModel.discarded) {
+                            tabCreateData.discarded = tabModel.discarded;
+                            tabCreateData.title = tabModel.title;
+                        }
                     }
 
                     browser.tabs.create(tabCreateData).catch((e) => {
@@ -145,23 +148,19 @@ function restoreWindow(windowModel) {
         });
 }
 
-browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender) {
     if (!request.func) {
-        sendResponse({ error: "API Error: No function name passed." });
-        return;
+        return new Promise((_, rej) => rej("API Error: No function name passed."));
     }
 
     const func = api[request.func];
     if (func) {
         delete request.func;
-        func.apply(null, [request, sender]).then(d =>
-            sendResponse(d)
-        );
+        return func.apply(null, [request, sender]);
     } else {
-        sendResponse({ error: "API Error: No such function exists: " + request.func });
-        return;
+        return new Promise((_, rej) => rej("API Error: No such function exists: " + request.func));
     }
-    return true;
-} as any);
+    // return true;
+});
 
 

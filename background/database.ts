@@ -9,7 +9,7 @@ export class Database {
 
     constructor() {
         this.db = new Dexie("SessionStorage");
-        this.db.version(1).stores({ session: "++id,name,date,windows" });
+        this.db.version(1).stores({ session: "++id,name,type,date,windows" });
 
         this.sessionTable = this.db.table("session");
     }
@@ -55,7 +55,7 @@ export class Database {
     public updateSession(session: SessionModel): Promise<number> {
         const updateModel = { ...session };
         delete updateModel.id;
-        if(updateModel.windows) {
+        if (updateModel.windows) {
             updateModel.windows = JSON.stringify(updateModel.windows) as any;
         }
         return this.sessionTable.update(session.id, updateModel);

@@ -4,7 +4,7 @@
         <label>{{ displayTabCount(session) }} </label>
     </div>
 
-    <div class="remove-button" matTooltip="Delete session" (click)="deleteSession($event)">
+    <div class="remove-button" matTooltip="Delete session" (click)="deleteSession($event)" *ngIf="session.id">
         <fa-icon [icon]="closeIcon"></fa-icon>
     </div>
 </div>

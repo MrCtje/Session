@@ -27,6 +27,7 @@
     "angular-feather": "^6.0.10",
     "angular-split": "^4.0.0",
     "bootstrap": "^4.5.3",
+    "fuse.js": "^6.4.2",
     "ngx-bootstrap": "^6.1.0",
     "ngx-scrollbar": "^7.3.0",
     "normalize-scss": "^7.0.1",

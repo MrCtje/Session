@@ -1,26 +1,26 @@
-<div class="main">
+<div class="main" *ngIf="session">
     <div class="header">
         <div class="header-title">
-            <h4 *ngIf="sessionInfo && !sessionInfo.session.id else savedSession">
-                {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name)  : ""}}
+            <h4 *ngIf="!session.id else databaseSession">
+                Current Session
             </h4>
-            <ng-template #savedSession>
-                <h4 class="link" (click)="editName(sessionInfo.session)" matTooltip="Edit name">
-                    {{sessionInfo ? (sessionInfo.detailName ? sessionInfo.detailName : sessionInfo.session.name) : ""}}
+            <ng-template #databaseSession>
+                <h4 class="link" (click)="editName(session)" matTooltip="Edit name">
+                    {{session.type === "Saved" ? session.name : "Backup Session"}}
                 </h4>
             </ng-template>
 
         </div>
         <div class="action">
-            <button class="button" aria-label="Save" (click)="save(sessionInfo.session)"
-                *ngIf="sessionInfo && !sessionInfo.session.id">
+            <button class="button" aria-label="Save" (click)="save(session)"
+                *ngIf="!session.id">
                 <div class="icon">
                     <i-feather name="save"></i-feather>
                 </div>
                 <div class="text">Save</div>
             </button>
-            <button class="button" aria-label="Open" [disabled]="sessionInfo && !sessionInfo.session.id"
-                (click)="open(sessionInfo.session)">
+            <button class="button" aria-label="Open" [disabled]="!session.id"
+                (click)="open(session)">
                 <div class="text">Open</div>
             </button>
             <button class="button transparent" aria-label="menu">
@@ -29,22 +29,23 @@
         </div>
     </div>
     <div class="content">
-        <div class="content-meta" *ngIf="sessionInfo">
+        <div class="content-meta">
             <div class="content-date">
-                Changed {{toDateString(sessionInfo.session)}} <span
-                    class="content-date-ago">{{ago(sessionInfo.session.date)}}</span>
+                Changed {{toDateString(session)}} <span
+                    class="content-date-ago">{{ago(session.date)}}</span>
             </div>
             <div class="content-stats">
-                {{getStats(sessionInfo.session)}}
+                {{getStats(session)}}
             </div>
         </div>
         <ng-scrollbar>
-            <div class="content-container" *ngIf="sessionInfo">
-                <div class="session-window" *ngFor="let w of sessionInfo.session.windows | sortByIncognito">
+            <div class="content-container">
+                <div class="session-window" *ngFor="let w of session.windows | sortByIncognito">
                     <div class="window-header">
                         <fa-icon class="incognito-label" *ngIf="w.incognito" [icon]="incognito"></fa-icon>
                         <!-- <div class="incognito-label" *ngIf="w.incognito">Incognito</div> -->
-                        <label class="window-label link" (click)="openWindow(sessionInfo.session.id, w.id)" matTooltip="Open window">Window</label>
+                        <label class="window-label link" (click)="openWindow(session.id, w.id)"
+                            [matTooltip]="session.id ? 'Open window' : 'Focus window'">Window</label>
                         <label class="window-metadata">{{w.tabs.length}} tabs</label>
                     </div>
                     <div class="window-tabs" *ngFor="let t of w.tabs">

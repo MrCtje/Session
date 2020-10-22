@@ -10,3 +10,9 @@
 .main {
     margin: 1em;
 }
+
+.grid {
+    display: grid;
+    grid-template-rows: 6.5% 93.5%;
+    height: 100%;
+}

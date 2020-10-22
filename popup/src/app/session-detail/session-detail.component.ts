@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { SessionModel } from 'src/types/session';
-import { PanelOutput } from '../session-panel-list/session-panel-list.component';
 import { SessionController } from 'src/controller/session-controller';
 import * as timeago from 'timeago.js';
 import { countTabs } from 'src/methods/window';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { PromptModalComponent } from '../modals/prompt-modal/prompt-modal.component';
-import { WindowModel } from 'src/types/window';
 
 @Component({
     selector: 'session-detail',
@@ -17,7 +15,7 @@ export class SessionDetailComponent implements OnInit {
     @ViewChild(PromptModalComponent, { static: true }) prompt: PromptModalComponent;
 
     incognito = faUserSecret;
-    @Input() sessionInfo: PanelOutput;
+    @Input() session: SessionModel;
     @Output() sessionSaved: EventEmitter<number> = new EventEmitter();
 
     get stringify() {
@@ -37,6 +35,7 @@ export class SessionDetailComponent implements OnInit {
         this.prompt.openModal({ defaultAnswer: "Unnamed Session", question: "Name", title: "Saving Session" })
             .subscribe((name) => {
                 session.name = name;
+                session.type = "Saved";
                 this.sessionController.saveSession(session).then((id) =>
                     this.sessionSaved.emit(id)
                 );
@@ -58,7 +57,11 @@ export class SessionDetailComponent implements OnInit {
     }
 
     openWindow(sessionId: number, windowId: number): void {
-        this.sessionController.restoreWindow(sessionId, windowId);
+        if(sessionId) {
+            this.sessionController.restoreWindow(sessionId, windowId);
+        } else {
+            this.sessionController.focusWindow(windowId);
+        }
     }
 
     toDateString(session: SessionModel) {
