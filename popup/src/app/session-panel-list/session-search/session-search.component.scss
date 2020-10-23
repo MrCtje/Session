@@ -1,6 +1,9 @@
+
+@import "../../../common.scss";
+
 .main {
     .search-input {
         width: 100%;
-        background: #525252;
+        background: $primary-color;
     }
 }

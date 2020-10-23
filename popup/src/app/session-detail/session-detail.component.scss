@@ -21,7 +21,7 @@
     display: inline-block;
     flex-basis: 100%;
 
-    >h4 {
+    > h4 {
         display: inline-block;
     }
 }
@@ -63,49 +63,97 @@
         margin-left: 1em;
         max-height: 600px;
         .session-window {
+            margin-bottom: 3em;
+
             &:last-child {
                 padding-bottom: 3em;
             }
 
-            margin-bottom: 3em;
+            $ingcognito-label-size: 1em;
+            $ingcognito-label-margin: 1em;
+
             .window-header {
                 margin-bottom: 1em;
+                display: inline-block;
+
                 .incognito-label {
                     // background-color: transparent;
                     // border-radius: 15%;
                     // border: 2px solid $primary-btn-color;
                     // display: inline-block;
                     // padding: 2px;
-                    margin-right: 0.5em;
+                    font-size: $ingcognito-label-size;
+                    margin-right: $ingcognito-label-margin;
                 }
+
+                // When there is no incognito label
+                .window-label:first-child {
+                    margin-left: 2 * $ingcognito-label-size;
+                }
+
                 .window-label {
-                    margin-right: 2.5em;
+                    margin-right: 1em;
                 }
+
                 .window-metadata {
+                    margin-right: 1em;
                     color: grey;
+                }
+
+                &:hover .window-menu-button,
+                .window-menu-button[aria-expanded="true"] {
+                    visibility: visible;
+                }
+
+                .window-menu-button {
+                    display: inline-block;
+                    visibility: hidden;
                 }
             }
 
             .window-tabs {
-                display: flex;
+                display: grid;
+                grid-template-columns: 1em 1em min-content minmax(300px, max-content);
+                grid-gap: 1em;
                 align-items: center;
-                margin-left: 1em;
                 margin-bottom: 0.5em;
+
+                .remove-button {
+                    display: none;
+                }
+
+                &:hover .remove-button {
+                    $remove-button-color: #bf1f1fc1;
+                    grid-column: 1;
+                    display: flex;
+                    align-self: center;
+                    justify-self: center;
+                    color: $remove-button-color;
+
+                    &:hover {
+                        color: lighten($remove-button-color, 20%);
+                    }
+
+                    &:active {
+                        color: lighten($remove-button-color, 30%);
+                    }
+                }
 
                 .tab-image {
                     margin-right: 1em;
                     width: 16px;
                     height: 16px;
+                    grid-column: 2;
                 }
 
                 .tab-title {
-                    color: $primary-btn-color;
+                    color: $secondary-color;
                     margin-right: 1em;
-
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     max-width: 300px;
+                    grid-column: 3;
                 }
 
                 .tab-title:hover + .tab-url {
@@ -117,7 +165,7 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
-                    max-width: 30%;
+                    grid-column: 4;
                 }
             }
         }

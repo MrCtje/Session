@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import { SessionModel } from 'src/types/session';
 import { SessionController } from 'src/controller/session-controller';
 import * as timeago from 'timeago.js';
 import { countTabs } from 'src/methods/window';
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { PromptModalComponent } from '../modals/prompt-modal/prompt-modal.component';
 import { SearchKeys, SearchOutput } from '../session-panel-list/session-search/session-search.component';
 import { markString } from 'src/methods/string';
-import { url } from 'inspector';
+import { MenuItem } from '../settings-menu/settings-menu.component';
+import { MatMenu } from '@angular/material/menu';
 
 @Component({
     selector: 'session-detail',
@@ -17,10 +18,98 @@ import { url } from 'inspector';
 export class SessionDetailComponent implements OnInit, OnChanges {
     @ViewChild(PromptModalComponent, { static: true }) prompt: PromptModalComponent;
 
-    incognito = faUserSecret;
     @Input() session: SessionModel;
     @Input() searchResult: SearchOutput | null;
     @Output() sessionSaved: EventEmitter<number> = new EventEmitter();
+
+    closeIcon = faTimesCircle;
+    incognito = faUserSecret;
+    sessionMenu: MenuItem[] = [
+        {
+            label: "Rename",
+            handler: () => { console.log("Rename pending"); }
+        },
+        {
+            label: "Duplicate",
+            handler: () => { console.log("Rename pending"); }
+        },
+        {
+            label: "Delete",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Sort by title",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            label: "Sort by url",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Unify windows",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            label: "Overwrite with current",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            label: "Settings"
+        },
+
+    ];
+
+    windowMenu: MenuItem[] = [
+        {
+            label: "Copy to new session",
+            handler: () => { console.log("Rename pending"); }
+        },
+        {
+            label: "Move to new session",
+            handler: () => { console.log("Rename pending"); }
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Open",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            label: "Open incognito",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            label: "Open tabs",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Rename",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            label: "Make incognito",
+            handler: () => { console.log("Delete pending"); }
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Delete"
+        },
+    ];
+
+    sessionMenuRef: ElementRef<MatMenu>;
+    windowMenuRef: ElementRef<MatMenu>;
 
     get stringify() {
         return JSON.stringify;
@@ -65,7 +154,7 @@ export class SessionDetailComponent implements OnInit, OnChanges {
             const urlMatch = matches.find(x => x.value === url);
             if (urlMatch) {
                 // Mark whole string
-                return  "<span class='mark'>" + title + "</span>";
+                return "<span class='mark'>" + title + "</span>";
             }
 
             return title;

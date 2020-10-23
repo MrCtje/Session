@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subscriber } from 'rxjs';
 
@@ -14,9 +14,10 @@ export interface PromptModal {
     templateUrl: './prompt-modal.component.html',
     styleUrls: ['./prompt-modal.component.scss']
 })
-export class PromptModalComponent implements OnInit {
+export class PromptModalComponent implements OnInit, OnDestroy {
     modalRef: BsModalRef;
     @ViewChild("template", { static: true }) template;
+    @ViewChild("input", { static: true }) input: ElementRef;
 
     title: string;
     question: string;
@@ -28,6 +29,9 @@ export class PromptModalComponent implements OnInit {
     constructor(private modalService: BsModalService) {
     }
 
+    ngOnInit(): void {
+    }
+
     openModal(options: Partial<PromptModal>): Observable<string> {
         return new Observable((sub) => {
             this.subscription = sub;
@@ -37,11 +41,13 @@ export class PromptModalComponent implements OnInit {
             this.answer = options.answer;
             this.question = options.question;
 
-            this.modalRef = this.modalService.show(this.template, { class: 'modal-sm', ignoreBackdropClick: true });
+            this.modalRef = this.modalService.show(this.template, {
+                class: 'modal-sm',
+                ignoreBackdropClick: true,
+                keyboard: true,
+                focus: false
+            });
         });
-    }
-
-    ngOnInit(): void {
     }
 
     save() {
@@ -51,6 +57,10 @@ export class PromptModalComponent implements OnInit {
 
     cancel() {
         this.modalRef.hide();
+        this.subscription.unsubscribe();
+    }
+
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 

@@ -5,7 +5,6 @@
 // Plus imports for other components in your app.
 @import "common.scss";
 
-
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
@@ -67,19 +66,7 @@ input[type="text"] {
 }
 
 
-
-// // Reset
-
-// a{text-decoration:none; color:inherit; cursor:pointer;}
-// button{background-color:transparent; color:inherit; border-width:0; padding:0; cursor:pointer;}
-// figure{margin:0;}
-// input::-moz-focus-inner {border:0; padding:0; margin:0;}
-// ul, ol, dd{margin:0; padding:0; list-style:none;}
-// h1, h2, h3, h4, h5, h6{ font-size:inherit; font-weight:inherit; }
-// p{margin:0;}
-// cite {font-style:normal;}
-// fieldset{border-width:0; padding:0; margin:0;}
-
+// Bootstrap modal
 
 .modal {
     // position: fixed;
@@ -93,7 +80,7 @@ input[type="text"] {
     // -webkit-overflow-scrolling: touch;
     // outline: 0;
     color: white;
-  }
+}
 .modal-content {
     // position: relative;
     background-color: #414141;
@@ -105,7 +92,7 @@ input[type="text"] {
     // outline: 0;
     // -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
     //         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
-  }
+}
 //   .modal-backdrop {
 //     position: fixed;
 //     top: 0;
@@ -123,10 +110,10 @@ input[type="text"] {
 //     filter: alpha(opacity=50);
 //     opacity: .5;
 //   }
-  .modal-header {
+.modal-header {
     // padding: 15px;
     border-bottom: thin solid grey;
-  }
+}
 //   .modal-header .close {
 //     margin-top: -2px;
 //   }
@@ -138,12 +125,12 @@ input[type="text"] {
 //     position: relative;
 //     padding: 15px;
 //   }
-  .modal-footer {
+.modal-footer {
     // padding: 15px;
     // text-align: right;
     // border-top: 1px solid #e5e5e5;
     border-top: thin solid grey;
-  }
+}
 //   .modal-footer .btn + .btn {
 //     margin-bottom: 0;
 //     margin-left: 5px;
@@ -162,8 +149,9 @@ input[type="text"] {
 //     overflow: scroll;
 //   }
 
-/// button
 
+
+/// button
 .button {
     color: white;
     background-color: $primary-btn-color;
@@ -219,9 +207,30 @@ input[type="text"] {
     @extend .button, .transparent, :enabled;
 }
 
-
+// Mark
 .card-title {
     .mark {
         color: black;
+    }
+}
+
+
+// Mat menu
+.mat-menu-panel {
+    background-color: $primary-color;
+
+    .mat-menu-item {
+        color: white;
+        height: 35px;
+        line-height: normal;
+
+        &:focus {
+            outline: 2px solid $secondary-color;
+        }
+    }
+
+    .mat-divider {
+        border-top-width: 2px;
+        border-top-color: rgba(0, 0, 0, 0.32);
     }
 }

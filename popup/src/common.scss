@@ -1,4 +1,6 @@
-$primary-card-color: #271f1f;
-$active-card-color: #ec625f;
+$primary-color: #271f1f;
+$primary-card-color: $primary-color;
 
-$primary-btn-color: #ec625f;
+$secondary-color: #ec625f;
+$active-card-color: $secondary-color;
+$primary-btn-color: $secondary-color;

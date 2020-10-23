@@ -23,7 +23,7 @@
                 (click)="open(session)">
                 <div class="text">Open</div>
             </button>
-            <button class="button transparent" aria-label="menu">
+            <button class="button transparent" [matMenuTriggerFor]="sessionMenuRef" aria-label="menu">
                 <i-feather name="more-vertical"></i-feather>
             </button>
         </div>
@@ -47,8 +47,14 @@
                         <label class="window-label link" (click)="openWindow(session.id, w.id)"
                             [matTooltip]="session.id ? 'Open window' : 'Focus window'">Window</label>
                         <label class="window-metadata">{{w.tabs.length}} tabs</label>
+                        <button class="button transparent window-menu-button" [matMenuTriggerFor]="windowMenuRef" aria-label="menu">
+                            <i-feather name="more-vertical"></i-feather>
+                        </button>
                     </div>
                     <div class="window-tabs" *ngFor="let t of w.tabs">
+                        <div class="remove-button" matTooltip="Remove tab" [matTooltipShowDelay]="1000" *ngIf="session.id">
+                            <fa-icon [icon]="closeIcon"></fa-icon>
+                        </div>
                         <img class="tab-image" [src]="t.favIconUrl | safe" />
                         <ng-container *ngIf="searchResult else noSearch">
                             <a class="tab-title" [href]="t.url | safe" [innerHTML]="mark(t.title, t.url)"></a>
@@ -65,3 +71,5 @@
 </div>
 
 <prompt-modal #prompt></prompt-modal>
+<settings-menu (menuRef)="sessionMenuRef = $event" [menuItems]="sessionMenu"></settings-menu>
+<settings-menu (menuRef)="windowMenuRef = $event" [menuItems]="windowMenu"></settings-menu>

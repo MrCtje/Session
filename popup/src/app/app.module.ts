@@ -3,6 +3,10 @@ import { NgModule } from '@angular/core';
 import { AngularSplitModule } from 'angular-split';
 import { MatButtonModule } from '@angular/material/button';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatDividerModule} from '@angular/material/divider';
+import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+
 
 import { AppComponent } from './app.component';
 import { SessionPanelListComponent } from './session-panel-list/session-panel-list.component';
@@ -17,11 +21,13 @@ import { SortByIncognitoPipe } from 'src/pipes/sort-by-incognito.pipe';
 import { PromptModalComponent } from './modals/prompt-modal/prompt-modal.component';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { SessionSearchComponent } from './session-panel-list/session-search/session-search.component';
 import { FilterBackupSessionsPipe } from 'src/pipes/filter-backup-session';
 import { FilterSavedSessionsPipe } from 'src/pipes/filter-saved-session';
 import { FilterCurrentSessionPipe } from 'src/pipes/filter-current-session';
+import { RequestFocusDirective } from 'src/directives/request-focus.directive';
+import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
+
 
 const Icons = {
   MoreVertical,
@@ -41,6 +47,8 @@ const Icons = {
     FilterBackupSessionsPipe,
     FilterSavedSessionsPipe,
     FilterCurrentSessionPipe,
+    RequestFocusDirective,
+    SettingsMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +60,9 @@ const Icons = {
     FontAwesomeModule,
     FormsModule,
     ModalModule.forRoot(),
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule,
+    MatDividerModule
   ],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: { position: 'above' } as MatTooltipDefaultOptions }],
   bootstrap: [AppComponent]
