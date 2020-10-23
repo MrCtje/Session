@@ -1,15 +1,13 @@
-import { Dexie as DexieT } from "dexie";
+import Dexie from "dexie";
 import { SessionModel } from "./types/session";
 
-declare var Dexie;
-
 export class Database {
-    private db;
-    private sessionTable: DexieT.Table<SessionModel, number>;
+    private db: Dexie;
+    private sessionTable: Dexie.Table<SessionModel, number>;
 
     constructor() {
         this.db = new Dexie("SessionStorage");
-        this.db.version(1).stores({ session: "++id,name,type,date,windows" });
+        this.db.version(3).stores({ session: "++id,name,type,date" });
 
         this.sessionTable = this.db.table("session");
     }
@@ -27,6 +25,30 @@ export class Database {
                 sessionList.forEach(s => s.windows = JSON.parse(s.windows as any));
                 return sessionList;
             });
+    }
+
+    public async addSessionBackupModel(session: SessionModel): Promise<number> {
+        session.type = "Backup";
+        const addModel = { ...session };
+        delete addModel.id;
+        addModel.windows = JSON.stringify(addModel.windows) as any;
+
+        return this.db.transaction("rw", this.sessionTable, async (tx) => {
+            const count = await this.sessionTable
+                .where({ type: session.type })
+                .count();
+
+            if (count >= 5) {
+                const sortedTable = await this.sessionTable
+                    .where({ type: session.type })
+                    .reverse()
+                    .sortBy("id");
+
+                this.removeSessions(sortedTable.slice(4, sortedTable.length));
+            }
+
+            return this.sessionTable.add(addModel);
+        });
     }
 
     public addSessionModel(session: SessionModel): Promise<number> {

@@ -140,11 +140,11 @@ function restoreWindow(windowModel) {
                         }
                     }
 
-                    if(tabCreateData.url.startsWith('chrome-extension://')) {
-                        const tCopy = {...tabCreateData};
+                    if (tabCreateData.url.startsWith('chrome-extension://')) {
+                        const tCopy = { ...tabCreateData };
                         tCopy.url = null;
                         return browser.tabs.create(tCopy).then(realTab => {
-                            return browser.tabs.update(realTab.id, {url: tabCreateData.url});
+                            return browser.tabs.update(realTab.id, { url: tabCreateData.url });
                         });
                     }
 
@@ -172,5 +172,13 @@ browser.runtime.onMessage.addListener(function (request, sender) {
     }
     // return true;
 });
+
+setInterval(() => {
+    api.getCurrentSession().then((cs) => {
+        database.addSessionBackupModel(cs);
+    });
+},
+    1000 * 60 * 3
+);
 
 
