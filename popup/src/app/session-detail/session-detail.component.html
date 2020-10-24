@@ -12,8 +12,7 @@
 
         </div>
         <div class="action">
-            <button class="button" aria-label="Save" (click)="save(session)"
-                *ngIf="!session.id">
+            <button class="button" aria-label="Save" (click)="save(session)" *ngIf="session.type !== 'Saved'">
                 <div class="icon">
                     <i-feather name="save"></i-feather>
                 </div>
