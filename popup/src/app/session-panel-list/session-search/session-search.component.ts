@@ -21,6 +21,8 @@ export class SessionSearchComponent implements OnInit, OnChanges {
     debounceId;
     minMatchCharLength = 3;
 
+    searchString = "";
+
     constructor() { }
 
     ngOnInit(): void {
@@ -41,6 +43,7 @@ export class SessionSearchComponent implements OnInit, OnChanges {
                 });
         } else {
             this.fuse.setCollection(changes.sessionSearchList.currentValue as SessionModel[]);
+            this.search(this.searchString);
         }
     }
 
@@ -48,17 +51,22 @@ export class SessionSearchComponent implements OnInit, OnChanges {
         clearTimeout(this.debounceId);
         this.debounceId = setTimeout(() => {
             const trimmedInput = e.srcElement.value.trim();
-            if (trimmedInput.length < this.minMatchCharLength) {
-                this.searchResult.emit();
-                return;
-            }
-            const result = this.fuse.search(e.srcElement.value);
-            if (!trimmedInput) {
-                this.searchResult.emit();
-            } else {
-                this.searchResult.emit(result);
-            }
+            this.searchString = trimmedInput;
+            this.search(trimmedInput);
         }, 500);
+    }
+
+    search(searchString: string) {
+        if (searchString.length < this.minMatchCharLength) {
+            this.searchResult.emit();
+            return;
+        }
+        const result = this.fuse.search(searchString);
+        if (!searchString) {
+            this.searchResult.emit();
+        } else {
+            this.searchResult.emit(result);
+        }
     }
 
 }
