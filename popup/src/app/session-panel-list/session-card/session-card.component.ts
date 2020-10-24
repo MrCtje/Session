@@ -17,8 +17,9 @@ export class SessionCardComponent implements OnInit, OnChanges {
     closeIcon = faTimesCircle;
     @Input() session: SessionModel;
     @Input() searchResult: SearchOutput | null;
+    @Input() isActive: boolean;
+
     @Output() onSessionDelete: EventEmitter<number> = new EventEmitter();
-    isActive: boolean;
 
     sessionName: string;
 

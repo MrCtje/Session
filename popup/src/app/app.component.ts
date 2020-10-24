@@ -22,10 +22,14 @@ export class AppComponent {
         this.reload().then(() => this.selectedSession = this.currentSession);
     }
 
-    async reload() {
+    async reload(selectedSession?: number) {
         this.allSessions = await this.sessionController.getAllSessions();
         this.currentSession = await this.sessionController.getCurrentSession();
         this.allSessions = [...this.allSessions, this.currentSession];
+
+        if (selectedSession) {
+            this.selectedSession = this.allSessions.find(s => s.id === selectedSession) || this.selectedSession;
+        }
     }
 
     deleteSession(id: number) {

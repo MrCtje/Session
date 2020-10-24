@@ -2,10 +2,12 @@
     <as-split direction="horizontal">
         <as-split-area [size]="30" [minSize]="20" [maxSize]="40">
             <session-panel-list (selectionChanged)="selectedSession = $event" [allSessions]="allSessions"
-                (onSessionDelete)="deleteSession($event)" (onSearchResult)="searchResult = $event"></session-panel-list>
+                [selectedSession]="selectedSession" (onSessionDelete)="deleteSession($event)"
+                (onSearchResult)="searchResult = $event"></session-panel-list>
         </as-split-area>
         <as-split-area [size]="70" style="overflow: hidden;">
-            <session-detail [searchResult]="searchResult" [session]="selectedSession" (sessionSaved)="reload()"></session-detail>
+            <session-detail [searchResult]="searchResult" [session]="selectedSession" (sessionSaved)="reload($event)">
+            </session-detail>
         </as-split-area>
     </as-split>
 </div>

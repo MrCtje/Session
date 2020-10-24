@@ -15,9 +15,8 @@ export class SessionPanelListComponent implements OnInit {
     @Output() onSessionDelete: EventEmitter<SessionModel> = new EventEmitter();
     @Output() onSearchResult: EventEmitter<SearchOutput | null> = new EventEmitter();
 
-    oldSelection: SessionCardComponent;
-
     @Input() allSessions: SessionModel[];
+    @Input() selectedSession: SessionModel;
 
     currentSessionName = "Current Session";
     backupSessionName = "Backup Sessions";
@@ -30,12 +29,11 @@ export class SessionPanelListComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    setActive(session: SessionModel, comp: SessionCardComponent): void {
-        comp.setActive(true);
-        if (this.oldSelection && this.oldSelection !== comp) {
-            this.oldSelection.setActive(false);
-        }
-        this.oldSelection = comp;
+    trackById(session: SessionModel) {
+        return session.id;
+    }
+
+    setActive(session: SessionModel): void {
         this.selectionChanged.emit(session);
     }
 

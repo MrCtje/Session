@@ -1,26 +1,31 @@
 <div class="grid">
-    <session-search [sessionSearchList]="allSessions" (searchResult)="filterSearchResult($event)" ></session-search>
+    <session-search [sessionSearchList]="allSessions" (searchResult)="filterSearchResult($event)"></session-search>
     <ng-template #listTemplate let-sessions>
         <ng-scrollbar>
             <div class="main" *ngIf="sessions">
                 <div class="list" *ngIf="sessions | filterCurrentSession as currentSession">
                     <h5>{{currentSessionName}}</h5>
-                    <session-card [searchResult]="searchResult" [session]="currentSession" #card
-                        (click)="setActive(currentSession, card)"
+                    <session-card [searchResult]="searchResult" [session]="currentSession"
+                        [scrollToIfActive]="currentSession.id === selectedSession.id"
+                        [isActive]="currentSession.id === selectedSession.id" (click)="setActive(currentSession)"
                         (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
                 </div>
 
                 <div class="list">
                     <h5>{{backupSessionName}}</h5>
-                    <session-card [searchResult]="searchResult" *ngFor="let backupSess of sessions | filterBackupSessions" [session]="backupSess" #backupCard
-                        (click)="setActive(backupSess, backupCard)"
+                    <session-card [searchResult]="searchResult"
+                        *ngFor="let backupSess of sessions | filterBackupSessions; trackBy: trackById"
+                        [session]="backupSess" [scrollToIfActive]="backupSess.id === selectedSession.id"
+                        [isActive]="backupSess.id === selectedSession.id" (click)="setActive(backupSess)"
                         (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
                 </div>
 
                 <div class="list">
                     <h5>Saved Sessions</h5>
-                    <session-card [searchResult]="searchResult" *ngFor="let savedSess of sessions | filterSavedSessions" [session]="savedSess" #savedCard
-                        (click)="setActive(savedSess, savedCard)"
+                    <session-card [searchResult]="searchResult"
+                        *ngFor="let savedSess of sessions | filterSavedSessions; trackBy: trackById"
+                        [session]="savedSess" [scrollToIfActive]="savedSess.id === selectedSession.id"
+                        [isActive]="savedSess.id === selectedSession.id" (click)="setActive(savedSess)"
                         (onSessionDelete)="onSessionDelete.emit($event)"></session-card>
                 </div>
             </div>
@@ -28,10 +33,10 @@
     </ng-template>
 
     <ng-container *ngIf="!searchSessions; else searchList">
-        <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: allSessions}" ></ng-container>
+        <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: allSessions}"></ng-container>
     </ng-container>
 
     <ng-template #searchList>
-        <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: searchSessions}" ></ng-container>
+        <ng-container *ngTemplateOutlet="listTemplate; context: {$implicit: searchSessions}"></ng-container>
     </ng-template>
 </div>
