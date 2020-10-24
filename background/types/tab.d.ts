@@ -10,4 +10,5 @@ type TabModel = Pick<Tabs.Tab,
     | "title"
     | "isInReaderMode"
     | "favIconUrl"
+    | "id"
 >

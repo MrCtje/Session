@@ -45,6 +45,7 @@ const api = {
                     .filter(x => !x.url.startsWith("about:") || x.url === "about:newtab")
                     .map((realTab) => {
                         const tabModel: TabModel = {} as TabModel;
+                        tabModel.id = realTab.id;
                         tabModel.active = realTab.active;
                         tabModel.discarded = realTab.discarded;
                         tabModel.index = realTab.index;
