@@ -31,33 +31,37 @@ const api = {
         return database.getAllSessionModels()
     },
     getCurrentSession: async function (): Promise<SessionModel> {
-        const windows = (await api.getAllWindows()).map((realWindow) => {
-            const windowModel: WindowModel = {} as WindowModel;
-            windowModel.focused = realWindow.focused;
-            windowModel.height = realWindow.height;
-            windowModel.id = realWindow.id;
-            windowModel.incognito = realWindow.incognito;
-            windowModel.left = realWindow.left;
-            windowModel.state = realWindow.state;
-            windowModel.tabs = realWindow.tabs.map((realTab) => {
-                const tabModel: TabModel = {} as TabModel;
-                tabModel.active = realTab.active;
-                tabModel.discarded = realTab.discarded;
-                tabModel.index = realTab.index;
-                tabModel.isInReaderMode = realTab.isInReaderMode;
-                tabModel.pinned = realTab.pinned;
-                tabModel.title = realTab.title;
-                tabModel.url = realTab.url;
-                tabModel.windowId = realTab.windowId;
-                tabModel.favIconUrl = realTab.favIconUrl;
-                return tabModel;
+        const windows = (await api.getAllWindows())
+            .filter(w => !w.tabs.every(t => t.url.startsWith("about:") && t.url !== "about:newtab"))
+            .map((realWindow) => {
+                const windowModel: WindowModel = {} as WindowModel;
+                windowModel.focused = realWindow.focused;
+                windowModel.height = realWindow.height;
+                windowModel.id = realWindow.id;
+                windowModel.incognito = realWindow.incognito;
+                windowModel.left = realWindow.left;
+                windowModel.state = realWindow.state;
+                windowModel.tabs = realWindow.tabs
+                    .filter(x => !x.url.startsWith("about:") || x.url === "about:newtab")
+                    .map((realTab) => {
+                        const tabModel: TabModel = {} as TabModel;
+                        tabModel.active = realTab.active;
+                        tabModel.discarded = realTab.discarded;
+                        tabModel.index = realTab.index;
+                        tabModel.isInReaderMode = realTab.isInReaderMode;
+                        tabModel.pinned = realTab.pinned;
+                        tabModel.title = realTab.title;
+                        tabModel.url = realTab.url;
+                        tabModel.windowId = realTab.windowId;
+                        tabModel.favIconUrl = realTab.favIconUrl;
+                        return tabModel;
+                    });
+                windowModel.title = realWindow.title;
+                windowModel.top = realWindow.top;
+                windowModel.type = realWindow.type;
+                windowModel.width = realWindow.width;
+                return windowModel;
             });
-            windowModel.title = realWindow.title;
-            windowModel.top = realWindow.top;
-            windowModel.type = realWindow.type;
-            windowModel.width = realWindow.width;
-            return windowModel;
-        });
 
         return { id: null, date: new Date(), name: "", windows } as SessionModel;
     },
