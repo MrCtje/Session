@@ -33,6 +33,10 @@ export class SessionController {
         return browser.runtime.sendMessage({ func: "deleteSession", sessionId: id });
     }
 
+    deleteTab(sessionId: number, windowId: number, tabId: number) {
+        return browser.runtime.sendMessage({ func: "deleteTab", sessionId, windowId, tabId });
+    }
+
     updateSession(session: Partial<SessionModel> & Pick<SessionModel, "id">) {
         return browser.runtime.sendMessage({ func: "updateSession", sessionModel: session });
     }

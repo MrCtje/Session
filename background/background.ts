@@ -89,7 +89,10 @@ const api = {
         browser.windows.update(windowId, { focused: true });
     },
     deleteSession: async function ({ sessionId }) {
-        return database.removeSession({ id: sessionId });
+        return database.removeSession(sessionId);
+    },
+    deleteTab: async function ({ sessionId, windowId, tabId }) {
+        return database.removeTab(sessionId, windowId, tabId);
     }
 };
 

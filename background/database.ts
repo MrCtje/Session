@@ -7,7 +7,7 @@ export class Database {
 
     constructor() {
         this.db = new Dexie("SessionStorage");
-        this.db.version(3).stores({ session: "++id,name,type,date" });
+        this.db.version(1).stores({ session: "++id,name,type,date" });
 
         this.sessionTable = this.db.table("session");
     }
@@ -66,8 +66,21 @@ export class Database {
         return this.sessionTable.bulkAdd(addModels);
     }
 
-    public removeSession(session: Pick<SessionModel, "id">): Promise<void> {
-        return this.sessionTable.delete(session.id);
+    public removeSession(id: number): Promise<void> {
+        return this.sessionTable.delete(id);
+    }
+
+    public removeTab(sessionId: number, windowId: number, tabId: number): Promise<void> {
+        return this.db.transaction("rw", this.sessionTable, async () => {
+            const sessionModel = await this.getSessionModel(sessionId);
+            const window = sessionModel.windows.find(x => x.id === windowId);
+            if (!window)
+                return null;
+
+            window.tabs = window.tabs.filter(t => t.id !== tabId);
+
+            return this.updateSession(sessionModel) as any;
+        });
     }
 
     public removeSessions(sessions: SessionModel[]): Promise<void> {

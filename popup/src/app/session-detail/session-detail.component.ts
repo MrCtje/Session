@@ -199,6 +199,12 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         }
     }
 
+    deleteTab(sessionId: number, windowId: number, tabId: number) {
+        this.sessionController.deleteTab(sessionId, windowId, tabId).then(
+            () => this.sessionSaved.emit(sessionId)
+        );
+    }
+
     toDateString(session: SessionModel) {
         return new Date(session.date.toString()).toLocaleString();
     }
