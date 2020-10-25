@@ -3,12 +3,13 @@ import { SessionModel } from 'src/types/session';
 import { SessionController } from 'src/controller/session-controller';
 import * as timeago from 'timeago.js';
 import { countTabs } from 'src/methods/window';
-import { faTimesCircle, faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { faPuzzlePiece, faTimesCircle, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { PromptModalComponent } from '../modals/prompt-modal/prompt-modal.component';
 import { SearchKeys, SearchOutput } from '../session-panel-list/session-search/session-search.component';
 import { markString } from 'src/methods/string';
 import { MenuItem } from '../settings-menu/settings-menu.component';
 import { MatMenu } from '@angular/material/menu';
+import { WindowModel } from 'src/types/window';
 
 @Component({
     selector: 'session-detail',
@@ -24,28 +25,30 @@ export class SessionDetailComponent implements OnInit, OnChanges {
 
     closeIcon = faTimesCircle;
     incognito = faUserSecret;
+    extensionIcon = faPuzzlePiece;
+
     sessionMenu: MenuItem[] = [
         {
             label: "Rename",
-            handler: () => { console.log("Rename pending"); }
+            handler: () => { this.editName(this.session); }
         },
         {
             label: "Duplicate",
-            handler: () => { console.log("Rename pending"); }
+            handler: () => { this.save(this.session); }
         },
         {
             label: "Delete",
-            handler: () => { console.log("Delete pending"); }
+            handler: () => { this.deleteSession(this.session.id); }
         },
         {
             isDivider: true
         },
         {
-            label: "Sort by title",
+            label: "Sort by title [WIP]",
             handler: () => { console.log("Delete pending"); }
         },
         {
-            label: "Sort by url",
+            label: "Sort by url [WIP]",
             handler: () => { console.log("Delete pending"); }
         },
         {
@@ -53,25 +56,25 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         },
         {
             label: "Unify windows",
-            handler: () => { console.log("Delete pending"); }
+            handler: () => this.unifyWindows()
         },
         {
             label: "Overwrite with current",
-            handler: () => { console.log("Delete pending"); }
+            handler: () => { this.overwriteWithCurrent(this.session.id); }
         },
         {
-            label: "Settings"
+            label: "Settings [WIP]"
         },
 
     ];
 
     windowMenu: MenuItem[] = [
         {
-            label: "Copy to new session",
+            label: "Copy to new session [WIP]",
             handler: () => { console.log("Rename pending"); }
         },
         {
-            label: "Move to new session",
+            label: "Move to new session [WIP]",
             handler: () => { console.log("Rename pending"); }
         },
         {
@@ -79,32 +82,33 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         },
         {
             label: "Open",
-            handler: () => { console.log("Delete pending"); }
+            handler: (window: WindowModel) => { this.openWindow(this.session.id, window.id); }
         },
         {
             label: "Open incognito",
-            handler: () => { console.log("Delete pending"); }
+            handler: (window: WindowModel) => { this.openWindowInIncognito(this.session.id, window.id); }
         },
         {
-            label: "Open tabs",
-            handler: () => { console.log("Delete pending"); }
-        },
-        {
-            isDivider: true
-        },
-        {
-            label: "Rename",
-            handler: () => { console.log("Delete pending"); }
-        },
-        {
-            label: "Make incognito",
+            label: "Open tabs [WIP]",
             handler: () => { console.log("Delete pending"); }
         },
         {
             isDivider: true
         },
+        // {
+        //     label: "Rename [WIP]",
+        //     handler: () => { console.log("Delete pending"); }
+        // },
         {
-            label: "Delete"
+            label: "Make incognito [Works partially]",
+            handler: (window: WindowModel) => this.makeWindowIncognito(this.session.id, window.id)
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Delete",
+            handler: (window: WindowModel) => this.deleteWindow(window.id)
         },
     ];
 
@@ -148,7 +152,6 @@ export class SessionDetailComponent implements OnInit, OnChanges {
             return title;
         }
 
-        console.log(matches);
         const match = matches.find(x => x.value === title);
         if (!match) {
             const urlMatch = matches.find(x => x.value === url);
@@ -181,8 +184,8 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         this.prompt.openModal({ defaultAnswer: "Unnamed Session", answer: session.name, question: "Name", title: "Edit Name" })
             .subscribe((name) => {
                 session.name = name;
-                this.sessionController.updateSession({ id: session.id, name }).then((id) =>
-                    this.sessionSaved.emit(id)
+                this.sessionController.updateSession({ id: session.id, name }).then(() =>
+                    this.sessionSaved.emit(session.id)
                 );
             });
     }
@@ -191,7 +194,7 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         this.sessionController.restoreSession(session.id);
     }
 
-    openWindow(sessionId: number, windowId: number): void {
+    openWindow(sessionId: number | null, windowId: number): void {
         if (sessionId) {
             this.sessionController.restoreWindow(sessionId, windowId);
         } else {
@@ -199,9 +202,83 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         }
     }
 
+    openWindowInIncognito(sessionId: number, windowId: number) {
+        this.openWindowWith(sessionId, windowId, { incognito: true });
+    }
+
+    overwriteWithCurrent(sessionToOverwrite: number) {
+        this.sessionController.getCurrentSession().then((session: SessionModel) => {
+            this.sessionController.updateSession({ id: sessionToOverwrite, windows: session.windows })
+                .then(() => this.sessionSaved.emit(sessionToOverwrite));
+        });
+    }
+
+    unifyWindows() {
+        const sessionId = this.session.id;
+        const getUnifiedWindow = (incognito: boolean) => {
+            const filterWindows = this.session.windows
+                .filter(w => w.incognito === incognito);
+
+            if (filterWindows.length === 0)
+                return null;
+
+            return filterWindows.reduce((current, accum) => {
+                accum.tabs.push(...current.tabs);
+                return accum;
+            });
+        };
+
+        const incognitoWindow = getUnifiedWindow(true);
+        const normalWindow = getUnifiedWindow(false);
+
+        const windows = [];
+
+        if (incognitoWindow) {
+            windows.push(incognitoWindow);
+        }
+
+        if (normalWindow) {
+            windows.push(normalWindow);
+        }
+
+        this.sessionController.updateSession({ id: sessionId, windows })
+            .then(() => this.sessionSaved.emit(sessionId));
+    }
+
+    makeWindowIncognito(sessionId: number, windowId: number) {
+        this.updateWindow(sessionId, windowId, { incognito: true });
+    }
+
+    openWindowWith(sessionId: number, windowId: number, propertyChanges: Partial<WindowModel>): void {
+        if (sessionId) {
+            this.sessionController.restoreWindowWith(sessionId, windowId, propertyChanges);
+        }
+    }
+
+    updateWindow(sessionId: number, windowId: number, propertyChanges: Partial<WindowModel>) {
+        if (sessionId) {
+            this.sessionController.updateWindow(sessionId, windowId, propertyChanges)
+                .then(() => this.sessionSaved.emit(sessionId));
+        }
+    }
+
+    deleteWindow(windowId: number) {
+        const windows = this.session.windows.filter(w => w.id !== windowId);
+        const sessionId = this.session.id;
+        this.sessionController.updateSession({id: sessionId, windows}).then(
+            () => this.sessionSaved.emit(sessionId)
+        );
+    }
+
     deleteTab(sessionId: number, windowId: number, tabId: number) {
         this.sessionController.deleteTab(sessionId, windowId, tabId).then(
             () => this.sessionSaved.emit(sessionId)
+        );
+    }
+
+    deleteSession(sessionId: number) {
+        this.sessionController.deleteSession(sessionId).then(
+            () => this.sessionSaved.emit()
         );
     }
 
@@ -211,6 +288,11 @@ export class SessionDetailComponent implements OnInit, OnChanges {
 
     getStats(session: SessionModel) {
         return `${session.windows.length} Windows  ${countTabs(session)} Tabs`
+    }
+
+    isExtensionUrl(url: string) {
+        // return url.startsWith("chrome-extension://");
+        return !Boolean(url);
     }
 
 }

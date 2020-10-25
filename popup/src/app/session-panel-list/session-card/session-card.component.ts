@@ -26,13 +26,16 @@ export class SessionCardComponent implements OnInit, OnChanges {
     constructor() { }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.searchResult) {
-            return;
-        }
+        if(changes.session) {
+            const session = this.session;
+            this.sessionName = session.name ? session.name : "Changed " + this.ago(session.date);
 
-        const searchResult: SearchOutput | null = changes.searchResult.currentValue;
-        if (searchResult) {
-            this.mark(searchResult);
+        }
+        if (changes.searchResult) {
+            const searchResult: SearchOutput | null = changes.searchResult.currentValue;
+            if (searchResult) {
+                this.mark(searchResult);
+            }
         }
     }
 
@@ -41,10 +44,6 @@ export class SessionCardComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        const session = this.session;
-
-        this.sessionName = session.name ? session.name : "Changed " + this.ago(session.date);
-
         const searchResult: SearchOutput | null = this.searchResult;
         if (searchResult) {
             this.mark(searchResult);

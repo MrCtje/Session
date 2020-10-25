@@ -1,6 +1,9 @@
-<mat-menu #menu ="matMenu">
-    <ng-container *ngFor="let item of menuItems">
-        <button *ngIf="!item.isDivider" mat-menu-item  (click)="item.handler && item.handler()">{{item.label}}</button>
-        <mat-divider *ngIf="item.isDivider"></mat-divider>
-    </ng-container>
+<mat-menu #menuRef="matMenu">
+    <ng-template matMenuContent let-additionalData="additionalData">
+        <ng-container *ngFor="let item of menu">
+            <button *ngIf="!item.isDivider" mat-menu-item
+                (click)="item.handler && item.handler(additionalData)">{{item.label}}</button>
+            <mat-divider *ngIf="item.isDivider"></mat-divider>
+        </ng-container>
+    </ng-template>
 </mat-menu>

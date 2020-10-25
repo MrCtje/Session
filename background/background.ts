@@ -73,20 +73,36 @@ const api = {
         return database.updateSession(sessionModel);
     },
     restoreSession: async function ({ sessionId }) {
-        database.getSessionModel(sessionId)
+        return database.getSessionModel(sessionId)
             .then((sessionModel: SessionModel) => {
                 sessionModel.windows.forEach(restoreWindow);
             });
     },
     restoreWindow: async function ({ sessionId, windowId }) {
-        database.getSessionModel(sessionId)
+        return database.getSessionModel(sessionId)
             .then((sessionModel: SessionModel) => {
                 const windowModel = sessionModel.windows.find(w => w.id === windowId);
                 restoreWindow(windowModel);
             });
     },
+    restoreWindowWith: async function ({ sessionId, windowId, propertyChanges }) {
+        return database.getSessionModel(sessionId)
+            .then((sessionModel: SessionModel) => {
+                const windowModel = sessionModel.windows.find(w => w.id === windowId);
+                Object.getOwnPropertyNames(propertyChanges).forEach(p => windowModel[p] = propertyChanges[p]);
+                restoreWindow(windowModel);
+            });
+    },
+    updateWindow: async function ({ sessionId, windowId, propertyChanges }) {
+        return database.getSessionModel(sessionId)
+            .then((sessionModel: SessionModel) => {
+                const windowModel = sessionModel.windows.find(w => w.id === windowId);
+                Object.getOwnPropertyNames(propertyChanges).forEach(p => windowModel[p] = propertyChanges[p]);
+                return api.updateSession({sessionModel});
+            });
+    },
     focusWindow: async function ({ windowId }) {
-        browser.windows.update(windowId, { focused: true });
+        return browser.windows.update(windowId, { focused: true });
     },
     deleteSession: async function ({ sessionId }) {
         return database.removeSession(sessionId);

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { SessionModel } from 'src/types/session';
 import { browser } from 'webextension-polyfill-ts';
-import { promise } from 'protractor';
+import { WindowModel } from 'src/types/window';
 
 @Injectable({providedIn: "root"})
 export class SessionController {
@@ -23,6 +23,14 @@ export class SessionController {
 
     restoreWindow(id: number, windowId: number) {
         return browser.runtime.sendMessage({ func: "restoreWindow", sessionId: id, windowId });
+    }
+
+    restoreWindowWith(id: number, windowId: number, propertyChanges: Partial<WindowModel>) {
+        return browser.runtime.sendMessage({ func: "restoreWindowWith", sessionId: id, windowId, propertyChanges });
+    }
+
+    updateWindow(id: number, windowId: number, propertyChanges: Partial<WindowModel>) {
+        return browser.runtime.sendMessage({ func: "updateWindow", sessionId: id, windowId, propertyChanges });
     }
 
     focusWindow(windowId: number) {

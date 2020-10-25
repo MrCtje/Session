@@ -18,8 +18,7 @@
                 </div>
                 <div class="text">Save</div>
             </button>
-            <button class="button" aria-label="Open" [disabled]="!session.id"
-                (click)="open(session)">
+            <button class="button" aria-label="Open" *ngIf="session.id" (click)="open(session)">
                 <div class="text">Open</div>
             </button>
             <button class="button transparent" [matMenuTriggerFor]="sessionMenuRef" aria-label="menu">
@@ -30,8 +29,7 @@
     <div class="content">
         <div class="content-meta">
             <div class="content-date">
-                Changed {{toDateString(session)}} <span
-                    class="content-date-ago">{{ago(session.date)}}</span>
+                Changed {{toDateString(session)}} <span class="content-date-ago">{{ago(session.date)}}</span>
             </div>
             <div class="content-stats">
                 {{getStats(session)}}
@@ -46,7 +44,8 @@
                         <label class="window-label link" (click)="openWindow(session.id, w.id)"
                             [matTooltip]="session.id ? 'Open window' : 'Focus window'">Window</label>
                         <label class="window-metadata">{{w.tabs.length}} tabs</label>
-                        <button class="button transparent window-menu-button" [matMenuTriggerFor]="windowMenuRef" aria-label="menu">
+                        <button class="button transparent window-menu-button" [matMenuTriggerFor]="windowMenuRef" [matMenuTriggerData]="{additionalData: w}"
+                            aria-label="menu">
                             <i-feather name="more-vertical"></i-feather>
                         </button>
                     </div>
@@ -55,7 +54,12 @@
                             (click)="deleteTab(session.id, w.id, t.id)" *ngIf="session.id">
                             <fa-icon [icon]="closeIcon"></fa-icon>
                         </div>
-                        <img class="tab-image" [src]="t.favIconUrl | safe" />
+                        <ng-container *ngIf="isExtensionUrl(t.favIconUrl) else favIcon">
+                            <fa-icon class="grid-column-2" [icon]="extensionIcon"></fa-icon>
+                        </ng-container>
+                        <ng-template #favIcon>
+                            <img class="tab-image" [src]="t.favIconUrl | safe" />
+                        </ng-template>
                         <ng-container *ngIf="searchResult else noSearch">
                             <a class="tab-title" [href]="t.url | safe" [innerHTML]="mark(t.title, t.url)"></a>
                         </ng-container>
@@ -71,5 +75,5 @@
 </div>
 
 <prompt-modal #prompt></prompt-modal>
-<settings-menu (menuRef)="sessionMenuRef = $event" [menuItems]="sessionMenu"></settings-menu>
-<settings-menu (menuRef)="windowMenuRef = $event" [menuItems]="windowMenu"></settings-menu>
+<settings-menu (menuRef)="sessionMenuRef = $event" [menu]="sessionMenu"></settings-menu>
+<settings-menu (menuRef)="windowMenuRef = $event" [menu]="windowMenu"></settings-menu>

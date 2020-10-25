@@ -5,7 +5,7 @@
 
     <div class="modal-body text-center">
         <p>{{question || 'Are you sure?'}}:</p>
-        <input [requestFocus] type="text" [(ngModel)]="answer" [placeholder]="defaultAnswer" (keyup.enter)="save()"/>
+        <input [requestFocus]="100" type="text" [(ngModel)]="answer" [placeholder]="defaultAnswer" (keyup.enter)="save()"/>
     </div>
 
     <div class="modal-footer">

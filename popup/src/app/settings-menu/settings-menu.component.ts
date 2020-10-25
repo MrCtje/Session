@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 
 export interface MenuItem {
     label?: string;
-    handler?: () => void;
+    handler?: (additionalData?: any) => void;
     isDivider?: boolean;
 }
 
@@ -12,14 +12,14 @@ export interface MenuItem {
     styleUrls: ['./settings-menu.component.scss']
 })
 export class SettingsMenuComponent implements OnInit {
-    @ViewChild("menu", { static: true }) menu: ElementRef;
-    @Input() menuItems: MenuItem[];
+    @ViewChild("menuRef", { static: true }) _menuRef: ElementRef;
+    @Input() menu: MenuItem[];
     @Output() menuRef: EventEmitter<ElementRef> = new EventEmitter();
 
     constructor() { }
 
     ngOnInit(): void {
-        this.menuRef.emit(this.menu);
+        this.menuRef.emit(this._menuRef);
     }
 
 }
