@@ -44,12 +44,12 @@
                         <label class="window-label link" (click)="openWindow(session.id, w.id)"
                             [matTooltip]="session.id ? 'Open window' : 'Focus window'">Window</label>
                         <label class="window-metadata">{{w.tabs.length}} tabs</label>
-                        <button class="button transparent window-menu-button" [matMenuTriggerFor]="windowMenuRef" [matMenuTriggerData]="{additionalData: w}"
-                            aria-label="menu">
+                        <button class="button transparent window-menu-button" [matMenuTriggerFor]="windowMenuRef"
+                            [matMenuTriggerData]="{additionalData: w}" aria-label="menu">
                             <i-feather name="more-vertical"></i-feather>
                         </button>
                     </div>
-                    <div class="window-tabs" *ngFor="let t of w.tabs">
+                    <div class="window-tabs" *ngFor="let t of w.tabs | sortTabBy: sortTabByProp">
                         <div class="remove-button" matTooltip="Remove tab" [matTooltipShowDelay]="1000"
                             (click)="deleteTab(session.id, w.id, t.id)" *ngIf="session.id">
                             <fa-icon [icon]="closeIcon"></fa-icon>

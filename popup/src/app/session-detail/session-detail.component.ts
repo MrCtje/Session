@@ -10,6 +10,7 @@ import { markString } from 'src/methods/string';
 import { MenuItem } from '../settings-menu/settings-menu.component';
 import { MatMenu } from '@angular/material/menu';
 import { WindowModel } from 'src/types/window';
+import { TabModel } from 'src/types/tab';
 
 @Component({
     selector: 'session-detail',
@@ -27,29 +28,31 @@ export class SessionDetailComponent implements OnInit, OnChanges {
     incognito = faUserSecret;
     extensionIcon = faPuzzlePiece;
 
+    sortTabByProp: keyof TabModel = "index";
+
     sessionMenu: MenuItem[] = [
         {
             label: "Rename",
-            handler: () => { this.editName(this.session); }
+            handler: () => this.editName(this.session)
         },
         {
             label: "Duplicate",
-            handler: () => { this.save(this.session); }
+            handler: () => this.save(this.session)
         },
         {
             label: "Delete",
-            handler: () => { this.deleteSession(this.session.id); }
+            handler: () => this.deleteSession(this.session.id)
         },
         {
             isDivider: true
         },
         {
             label: "Sort by title [WIP]",
-            handler: () => { console.log("Delete pending"); }
+            handler: () => this.sortTabByProp = "title"
         },
         {
             label: "Sort by url [WIP]",
-            handler: () => { console.log("Delete pending"); }
+            handler: () => this.sortTabByProp = "url"
         },
         {
             isDivider: true
@@ -60,7 +63,7 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         },
         {
             label: "Overwrite with current",
-            handler: () => { this.overwriteWithCurrent(this.session.id); }
+            handler: () => this.overwriteWithCurrent(this.session.id)
         },
         {
             label: "Settings [WIP]"
@@ -70,27 +73,27 @@ export class SessionDetailComponent implements OnInit, OnChanges {
 
     windowMenu: MenuItem[] = [
         {
-            label: "Copy to new session [WIP]",
-            handler: () => { console.log("Rename pending"); }
+            label: "Copy to new session",
+            handler: (window: WindowModel) => this.copyWindowToNewSession(window)
         },
         {
-            label: "Move to new session [WIP]",
-            handler: () => { console.log("Rename pending"); }
+            label: "Move to new session",
+            handler: (window: WindowModel) => this.moveWindowToNewSession(this.session, window)
         },
         {
             isDivider: true
         },
         {
             label: "Open",
-            handler: (window: WindowModel) => { this.openWindow(this.session.id, window.id); }
+            handler: (window: WindowModel) => this.openWindow(this.session.id, window.id)
         },
         {
             label: "Open incognito",
-            handler: (window: WindowModel) => { this.openWindowInIncognito(this.session.id, window.id); }
+            handler: (window: WindowModel) => this.openWindowInIncognito(this.session.id, window.id)
         },
         {
             label: "Open tabs [WIP]",
-            handler: () => { console.log("Delete pending"); }
+            handler: () => console.log("Delete pending")
         },
         {
             isDivider: true
@@ -108,7 +111,7 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         },
         {
             label: "Delete",
-            handler: (window: WindowModel) => this.deleteWindow(window.id)
+            handler: (window: WindowModel) => this.deleteWindow(this.session, window.id)
         },
     ];
 
@@ -169,15 +172,32 @@ export class SessionDetailComponent implements OnInit, OnChanges {
             match.indices as any);
     }
 
-    save(session: SessionModel): void {
-        this.prompt.openModal({ defaultAnswer: "Unnamed Session", question: "Name", title: "Saving Session" })
-            .subscribe((name) => {
-                session.name = name;
-                session.type = "Saved";
-                this.sessionController.saveSession(session).then((id) =>
-                    this.sessionSaved.emit(id)
-                );
-            });
+    async save(session: SessionModel): Promise<number> {
+        return new Promise((res, rej) => {
+            this.prompt.openModal({ defaultAnswer: "Unnamed Session", question: "Name", title: "Saving Session" })
+                .subscribe((name) => {
+                    session.name = name;
+                    session.type = "Saved";
+                    this.sessionController.saveSession(session).then((id) => {
+                        this.sessionSaved.emit(id);
+                        res(id);
+                    });
+                });
+        });
+    }
+
+    copyWindowToNewSession(window: WindowModel): Promise<number> {
+        const session: SessionModel = {
+            id: null,
+            date: new Date(),
+            windows: [window]
+        } as SessionModel;
+        return this.save(session);
+    }
+
+    moveWindowToNewSession(session: SessionModel, window: WindowModel): void {
+        this.copyWindowToNewSession(window)
+            .then(() => this.deleteWindow(session, window.id));
     }
 
     editName(session: SessionModel): void {
@@ -262,10 +282,10 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         }
     }
 
-    deleteWindow(windowId: number) {
-        const windows = this.session.windows.filter(w => w.id !== windowId);
-        const sessionId = this.session.id;
-        this.sessionController.updateSession({id: sessionId, windows}).then(
+    deleteWindow(session: SessionModel, windowId: number) {
+        const windows = session.windows.filter(w => w.id !== windowId);
+        const sessionId = session.id;
+        this.sessionController.updateSession({ id: sessionId, windows }).then(
             () => this.sessionSaved.emit(sessionId)
         );
     }

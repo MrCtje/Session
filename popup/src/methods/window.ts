@@ -1,7 +1,8 @@
 import { SessionModel } from 'src/types/session';
 
 export function countTabs(session: SessionModel) {
-    return session.windows
-        .map((w) => w.tabs.length)
-        .reduce((accum, current) => accum + current);
+    const tabCounts = session.windows
+        .map((w) => w.tabs.length);
+    return tabCounts.length > 0 ? tabCounts
+        .reduce((accum, current) => accum + current) : 0;
 }
