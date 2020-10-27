@@ -18,12 +18,14 @@ $active-card-color: #ec625f;
 
     .information {
         grid-column: 2;
-        text-overflow: ellipsis;
         overflow: hidden;
-        white-space: nowrap;
 
         .card-title {
             margin-top: 0.5rem;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
             .mark {
                 color: black;
             }
