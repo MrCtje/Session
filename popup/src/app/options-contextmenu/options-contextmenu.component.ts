@@ -7,9 +7,9 @@ export interface MenuItem {
 }
 
 @Component({
-    selector: 'settings-menu',
-    templateUrl: './settings-menu.component.html',
-    styleUrls: ['./settings-menu.component.scss']
+    selector: 'options-contextmenu',
+    templateUrl: './options-contextmenu.component.html',
+    styleUrls: ['./options-contextmenu.component.scss']
 })
 export class SettingsMenuComponent implements OnInit {
     @ViewChild("menuRef", { static: true }) _menuRef: ElementRef;

@@ -26,9 +26,9 @@ import { FilterBackupSessionsPipe } from 'src/pipes/filter-backup-session';
 import { FilterSavedSessionsPipe } from 'src/pipes/filter-saved-session';
 import { FilterCurrentSessionPipe } from 'src/pipes/filter-current-session';
 import { RequestFocusDirective } from 'src/directives/request-focus.directive';
-import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
 import { ScrollToIfActiveDirective } from 'src/directives/scroll-to-if-active.directive';
 import { SortTabByPipe } from 'src/pipes/sort-tab-by.pipe copy';
+import { SettingsMenuComponent } from './options-contextmenu/options-contextmenu.component';
 
 
 const Icons = {

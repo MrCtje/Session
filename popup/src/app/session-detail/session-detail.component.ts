@@ -7,10 +7,10 @@ import { faPuzzlePiece, faTimesCircle, faUserSecret } from '@fortawesome/free-so
 import { PromptModalComponent } from '../modals/prompt-modal/prompt-modal.component';
 import { SearchKeys, SearchOutput } from '../session-panel-list/session-search/session-search.component';
 import { markString } from 'src/methods/string';
-import { MenuItem } from '../settings-menu/settings-menu.component';
 import { MatMenu } from '@angular/material/menu';
 import { WindowModel } from 'src/types/window';
 import { TabModel } from 'src/types/tab';
+import { MenuItem } from '../options-contextmenu/options-contextmenu.component';
 
 @Component({
     selector: 'session-detail',
