@@ -1,0 +1,19 @@
+<p>import-modal works!</p>
+<ng-template #template>
+    <div class="modal-header">
+        <h4>Import {{importSubject}}</h4>
+    </div>
+
+    <div class="modal-body text-center">
+        <textarea [(ngModel)]="importText"> </textarea>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="button" (click)="import()">
+            <div class="text">Import</div>
+        </button>
+        <button type="button" class="button transparent" (click)="close()">
+            <div class="text">Close</div>
+        </button>
+    </div>
+</ng-template>

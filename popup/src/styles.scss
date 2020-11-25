@@ -234,3 +234,12 @@ input[type="text"] {
         border-top-color: rgba(0, 0, 0, 0.32);
     }
 }
+
+.mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: $secondary-color;
+}
+
+.mat-tab-label {
+    color: white;
+    opacity: 0.8;
+}

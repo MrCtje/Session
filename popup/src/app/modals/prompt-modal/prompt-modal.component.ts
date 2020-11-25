@@ -17,7 +17,6 @@ export interface PromptModal {
 export class PromptModalComponent implements OnInit, OnDestroy {
     modalRef: BsModalRef;
     @ViewChild("template", { static: true }) template;
-    @ViewChild("input", { static: true }) input: ElementRef;
 
     title: string;
     question: string;

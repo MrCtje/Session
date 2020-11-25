@@ -11,7 +11,7 @@ export interface MenuItem {
     templateUrl: './options-contextmenu.component.html',
     styleUrls: ['./options-contextmenu.component.scss']
 })
-export class SettingsMenuComponent implements OnInit {
+export class OptionsContextmenuComponent implements OnInit {
     @ViewChild("menuRef", { static: true }) _menuRef: ElementRef;
     @Input() menu: MenuItem[];
     @Output() menuRef: EventEmitter<ElementRef> = new EventEmitter();

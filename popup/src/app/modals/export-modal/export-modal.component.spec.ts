@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsMenuComponent } from './options-contextmenu.component';
+import { ExportModalComponent } from './export-modal.component';
 
-describe('SettingsMenuComponent', () => {
-  let component: SettingsMenuComponent;
-  let fixture: ComponentFixture<SettingsMenuComponent>;
+describe('ExportModalComponent', () => {
+  let component: ExportModalComponent;
+  let fixture: ComponentFixture<ExportModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SettingsMenuComponent ]
+      declarations: [ ExportModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsMenuComponent);
+    fixture = TestBed.createComponent(ExportModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

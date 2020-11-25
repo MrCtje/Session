@@ -1,0 +1,40 @@
+<ng-template #template>
+    <div class="header">
+        <h6>Settings</h6>
+    </div>
+
+    <div class="body text-center">
+        <mat-tab-group>
+            <mat-tab *ngFor="let setting of settings" [label]="setting.category">
+                <ng-scrollbar [visibility]="'hover'">
+                <div class="content">
+                    <ng-container *ngFor="let option of setting.options; let i = index">
+                        <ng-container [ngSwitch]="option.type">
+                            <div class="input-group">
+                                <label class="label" for="option-{{i}}">{{option.label}}</label>
+                                <input class="input" id="option-{{i}}" type="text" [(ngModel)]="option.value" *ngSwitchCase="OptionType.Text" />
+                                <input class="input" id="option-{{i}}" type="number" [(ngModel)]="option.value" *ngSwitchCase="OptionType.Number" />
+                                <input class="input" id="option-{{i}}" type="checkbox" [(ngModel)]="option.value"
+                                    *ngSwitchCase="OptionType.Checkbox" />
+                                <!-- <opt  *ngSwitchCase=""/> -->
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-scrollbar>
+            </mat-tab>
+            <mat-tab label="About">
+
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="button" (click)="save()">
+            <div class="text">Save</div>
+        </button>
+        <button type="button" class="button transparent" (click)="cancel()">
+            <div class="text"> Cancel</div>
+        </button>
+    </div>
+</ng-template>

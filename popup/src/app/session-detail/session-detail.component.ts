@@ -11,6 +11,9 @@ import { MatMenu } from '@angular/material/menu';
 import { WindowModel } from 'src/types/window';
 import { TabModel } from 'src/types/tab';
 import { MenuItem } from '../options-contextmenu/options-contextmenu.component';
+import { SettingsMenuComponent } from '../modals/settings-menu/settings-menu.component';
+import { ExportModalComponent } from '../modals/export-modal/export-modal.component';
+import { ImportModalComponent } from '../modals/import-modal/import-modal.component';
 
 @Component({
     selector: 'session-detail',
@@ -19,6 +22,9 @@ import { MenuItem } from '../options-contextmenu/options-contextmenu.component';
 })
 export class SessionDetailComponent implements OnInit, OnChanges {
     @ViewChild(PromptModalComponent, { static: true }) prompt: PromptModalComponent;
+    @ViewChild(ExportModalComponent, { static: true }) exportModal: ExportModalComponent;
+    @ViewChild(ImportModalComponent, { static: true }) importModal: ImportModalComponent;
+    @ViewChild(SettingsMenuComponent, { static: true }) settings: SettingsMenuComponent;
 
     @Input() session: SessionModel;
     @Input() searchResult: SearchOutput | null;
@@ -42,6 +48,21 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         {
             label: "Delete",
             handler: () => this.deleteSession(this.session.id)
+
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Import session",
+            handler: () => this.importModal.openModal("session").subscribe(sessionString =>
+                this.save(JSON.parse(sessionString))
+            )
+        },
+        {
+            label: "Export session",
+            handler: () => this.exportModal.openModal(JSON.stringify(this.session)).subscribe()
+
         },
         {
             isDivider: true
@@ -66,7 +87,8 @@ export class SessionDetailComponent implements OnInit, OnChanges {
             handler: () => this.overwriteWithCurrent(this.session.id)
         },
         {
-            label: "Settings [WIP]"
+            label: "Settings",
+            handler: () => this.settings.openModal().subscribe()
         },
 
     ];
@@ -94,6 +116,13 @@ export class SessionDetailComponent implements OnInit, OnChanges {
         {
             label: "Open tabs [WIP]",
             handler: () => console.log("Delete pending")
+        },
+        {
+            isDivider: true
+        },
+        {
+            label: "Export window",
+            handler: (window: WindowModel) => this.exportModal.openModal(JSON.stringify(window)).subscribe()
         },
         {
             isDivider: true
